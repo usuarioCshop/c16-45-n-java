@@ -1,15 +1,13 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-
+import ProductsTable from "@/components/products/ProductsTable";
 
 function App() {
-  
-
   return (
     <>
-     <div>Agregar componentes</div>
+      <div>
+        <ProductsTable />
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
