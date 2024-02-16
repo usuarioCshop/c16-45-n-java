@@ -4,15 +4,10 @@ import com.cursojava.curso.dto.UsuarioDTO;
 import com.cursojava.curso.dto.UsuarioDTOMapper;
 import com.cursojava.curso.entity.Usuario;
 import com.cursojava.curso.repository.UsuarioRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,7 +48,7 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public UsuarioDTO updateUsuario(String id, Usuario usuarioUpdate) {
+    public UsuarioDTO update(String id, Usuario usuarioUpdate) {
         Optional<Usuario> dbResponse = usuarioRepository.findById(id);
         if (dbResponse.isPresent()) {
             Usuario usuario = dbResponse.get();
