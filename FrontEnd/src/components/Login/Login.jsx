@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -12,7 +11,6 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  theme,
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useContext, useState } from "react";
@@ -46,7 +44,7 @@ export const Login = () => {
         const data = await response.json();
         if (data) {
           actualizarLogin(true);
-          navigate("/prueba");
+          navigate("/productos");
         } else {
           setError("Credenciales invalidas");
         }
@@ -62,130 +60,147 @@ export const Login = () => {
   }
 
   return (
-    <Center >
-     
-        <Box
-          bgColor={"white"}
-          p="30px"
-          borderRadius={"10px"}
-          boxShadow={" 5px 5px 2px rgba(15,15,19,0.2)"} //no esta andando el colo de sta forma
-          h="300px"
+    <Center>
+      <Box
+        bgColor={"white"}
+        p="30px"
+        borderRadius={"10px"}
+        boxShadow={" 5px 5px 2px rgba(15,15,19,0.2)"} //no esta andando el colo de sta forma
+        h="300px"
+      >
+        <Box>
+          {error != "" && (
+            <Text
+              as="h2"
+              color="red"
+              fontWeight={"bold"}
+              bgColor={"#f9bfab"}
+              p="10px"
+              m="10px"
+              borderRadius={"10px"}
+            >
+              {error}
+            </Text>
+          )}
+        </Box>
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          validate={(values) => {
+            const errors = {};
+            if (!values.email) {
+              errors.email = "Required";
+            } else if (
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            ) {
+              errors.email = "Invalid email address";
+            }
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            enviarDatosAlaApi(values);
+            setSubmitting(false);
+          }}
         >
-          <Box>
-            {error != "" && (
-              <Text
-                as="h2"
-                color="red"
-                fontWeight={"bold"}
-                bgColor={"#f9bfab"}
-                p="10px"
-                m="10px"
-                borderRadius={"10px"}
-              >
-                {error}
-              </Text>
-            )}
-          </Box>
-          <Formik
-            initialValues={{ email: "", password: "" }}
-            validate={(values) => {
-              const errors = {};
-              if (!values.email) {
-                errors.email = "Required";
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
-                errors.email = "Invalid email address";
-              }
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              enviarDatosAlaApi(values);
-              setSubmitting(false);
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <Field name="email">
-                  {({ field, form }) => (
-                   
-                    <FormControl variant="floating" label="email"
-                      isInvalid={form.errors.email && form.touched.email}
+          {({ isSubmitting }) => (
+            <Form>
+              <Field name="email">
+                {({ field, form }) => (
+                  <FormControl
+                    variant="floating"
+                    isInvalid={form.errors.email && form.touched.email}
+                  >
+                    <Input
+                      {...field}
+                      id="email"
+                      placeholder=" "
+                      borderColor={"inputDefault"}
+                      _hover={{
+                        border: "2px solid black", // Color del borde al tener foco
+                      }}
+
+                      focusBorderColor="rgba(0,0,0,0.04)"
+                    />
+                    <FormLabel
+                      htmlFor="email"
+                      fontWeight="bold"
+                      backgroundColor="white"
                     >
-                      <FormLabel htmlFor="email" fontWeight="bold" backgroundColor= "white">
-                        Email
-                      </FormLabel>
+                      Email
+                    </FormLabel>
+
+                    <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              <Field name="password">
+                {({ field, form }) => (
+                  <FormControl
+                    variant="floating"
+                    mt="8px"
+                    isInvalid={form.errors.password && form.touched.password}
+                  >
+                    <InputGroup>
                       <Input
                         {...field}
-                        id="email"
+                        id="password"
+                        _hover={{
+                          border: "2px solid black", // Color del borde al tener foco
+                        }}
+                        type={ver}
                         placeholder=" "
+                        borderColor={"inputDefault"}
                         focusBorderColor="rgba(0,0,0,0.04)"
                       />
-                      <FormErrorMessage>{form.errors.email}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-
-                <Field name="password" >
-                  {({ field, form }) => (
-                    <FormControl variant="floating" mt="8px" label="password"
-                      isInvalid={form.errors.password && form.touched.password}
+                      <FormLabel
+                      htmlFor="password"
+                      fontWeight="bold"
+                      backgroundColor="white"
                     >
-                      <FormLabel htmlFor="password" fontWeight="bold"  backgroundColor= "white">
-                        Password
-                      </FormLabel>
-                      <InputGroup>
-                        <Input
-                          {...field}
-                          id="password"
-                          type={ver}
-                          placeholder=" "
-                          focusBorderColor="rgba(0,0,0,0.04)"
-                        />
-                        <InputRightElement>
-                          {ver == "password" && (
-                            <ViewIcon
-                              w="60px"
-                              boxSize="20px"
-                              mr="2px"
-                              color="grey"
-                              onClick={verClave}
-                            />
-                          )}
-                          {ver == "text" && (
-                            <ViewOffIcon
-                              w="60px"
-                              boxSize="20px"
-                              mr="2px"
-                              color="grey"
-                              onClick={verClave}
-                            />
-                          )}
-                        </InputRightElement>
-                      </InputGroup>
+                      Password
+                    </FormLabel>
+                      <InputRightElement>
+                        {ver == "password" && (
+                          <ViewIcon
+                            w="60px"
+                            boxSize="20px"
+                            mr="2px"
+                            color="grey"
+                            onClick={verClave}
+                          />
+                        )}
+                        {ver == "text" && (
+                          <ViewOffIcon
+                            w="60px"
+                            boxSize="20px"
+                            mr="2px"
+                            color="grey"
+                            onClick={verClave}
+                          />
+                        )}
+                      </InputRightElement>
+                    </InputGroup>
+                    
+                    <FormErrorMessage>{form.errors.password}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-                      <FormErrorMessage>
-                        {form.errors.password}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  colorScheme="#363636"
-                  variant="outline"
-                  m="10px"
-                >
-                  Verificar
-                </Button>
-               
-              </Form>
-            )}
-          </Formik>
-        </Box>
-        
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                colorScheme="#363636"
+                variant="outline"
+                m="10px"
+              >
+                Verificar
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+      
+     
     </Center>
   );
 };

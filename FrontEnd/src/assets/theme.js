@@ -12,10 +12,29 @@ export const theme = extendTheme({
         lightPurple:'#9694FF',
         AlmosWhitePurple:'#D4D3F9',
         purple63: '#72718f', 
-        sombra20: 'rgba(15,15,19,0.2)'
-      
+        sombra20: 'rgba(15,15,19,0.2)',
+        inputDefault:'rgba(0, 0, 0, 0.3)',
+        inputHover:'rgba(15, 15, 19, 1)',
       },
+      
     components: {
+      Input: {
+        baseStyle: {
+          color:"red",
+          _hover: {
+            border: "2px solid black", // Cambia aquí al color que desees al hacer hover
+            
+          },
+        },
+        variants: {
+          filled: {
+            border:"2px solid black",
+            _hover: {
+              borderColor: "black",
+            },
+          },
+        },
+      },
       Form: {
         variants: {
           floating: {
@@ -33,8 +52,6 @@ export const theme = extendTheme({
                 left: 0,
                 zIndex: 1,
                 position: "absolute",
-                // borderRadius:"25px",
-                
                 pointerEvents: "none",
                 mx: 2,
                 px: 1,

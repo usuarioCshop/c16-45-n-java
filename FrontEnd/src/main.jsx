@@ -6,7 +6,6 @@ import { LoginProvider} from "./components/context/LoginProvider.jsx"
 import { theme} from "./assets/theme.js";
 
 
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <LoginProvider>
