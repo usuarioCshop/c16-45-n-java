@@ -1,7 +1,7 @@
-import { BrowserRouter, Link, Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route,  Routes } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import { Login } from "./components/Login/Login";
-import { Prueba } from "./components/Prueba/Prueba";
+
 
 import viteLogo from "/vite.svg";
 // import {FrmLogin} from './components/Login/FrmLogin.jsx'
@@ -14,16 +14,18 @@ function App() {
       <Container
         display="flex"
         alignContent="center"
-        justifySelf="center"
+        justifyContent="center"
         minH="100vh"
+        bgColor="purple63"
+
       >
-       
+        
           <Routes>
             <Route exact path="/" element={<Login />}></Route>
-            <Route exact path="/prueba" element={<Prueba />}></Route>
+            {/* <Route exact path="/prueba" element={<Prueba />}></Route> */}
             
           </Routes>
-       
+     
       </Container>
     </BrowserRouter>
   );
