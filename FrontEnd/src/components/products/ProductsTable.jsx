@@ -26,14 +26,15 @@ export default function ProductsTable() {
   return (
     <>
       <TableContainer p={5}>
-        <Table variant={"striped"} colorScheme="telegram" size={"md"}>
-          <Thead>
+        <Table variant={"striped"} colorScheme="telegram" size="md">
+          <Thead borderRadius={"8"}>
             <Tr>
-              <Th></Th>
-              <Th>nombre</Th>
+              <Th>imagen</Th>
+              <Th>nombre filtrar</Th>
+              <Th>c&oacute;digo</Th>
+              <Th>categoria</Th>
               <Th>precio</Th>
-              <Th>fecha</Th>
-              <Th>stock</Th>
+              <Th>cantidad</Th>
               <Th>acciones</Th>
             </Tr>
           </Thead>

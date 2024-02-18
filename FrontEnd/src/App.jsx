@@ -1,37 +1,29 @@
+import { Container, ColorModeProvider, Heading } from "@chakra-ui/react";
+
 import ProductsTable from "@/components/products/ProductsTable";
+import Navbar from "@/components/navbar/Navbar";
 import ModalWindow from "./components/ui/ModalWindow";
-import {
-  useTheme,
-  useColorMode,
-  IconButton,
-  ColorModeProvider,
-  ThemeProvider,
-} from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 function App() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const theme = useTheme();
-  console.log(colorMode);
-  const bg = colorMode === "dark" ? theme.colors.black : theme.colors.white;
-  // const color =
-  //   colorMode === "dark" ? theme.colors.dark.color : theme.colors.light.color;
-  const toggleIcon = colorMode === "dark" ? <SunIcon /> : <MoonIcon />;
   return (
-    <ThemeProvider theme={theme}>
-      <ColorModeProvider>
-        <IconButton
-          icon={toggleIcon}
-          onClick={toggleColorMode}
-          bg={bg}
-          _hover={{ color: "purple63" }}
-        ></IconButton>
-        <ModalWindow />
-        <div>
-          <ProductsTable />
-        </div>
-      </ColorModeProvider>
-    </ThemeProvider>
+    <ColorModeProvider>
+      <Container maxW="{[90%, sm, md]}" bgColor="white">
+        <Navbar bgGradient="linear-gradient(180deg, #201F4F 0%, #363583 100%)" />
+        <Heading
+          as="h2"
+          size="3xl"
+          colorScheme="purple63"
+          m={"5"}
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          Productos
+          <ModalWindow />
+        </Heading>
+        <ProductsTable />
+      </Container>
+    </ColorModeProvider>
   );
 }
 

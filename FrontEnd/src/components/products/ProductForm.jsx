@@ -3,7 +3,6 @@ import {
   Button,
   Box,
   Input,
-  Heading,
   VStack,
   FormControl,
   FormLabel,
@@ -39,14 +38,13 @@ export default function ProductForm() {
     <Box
       maxW="md"
       mx="auto"
-      mt={10}
+      mt={2}
       p={6}
       borderWidth={1}
       borderRadius="md"
       boxShadow="lg"
       bgColor={"purple63"}
     >
-      <Heading mb={6}>Product Form</Heading>
       <VStack spacing={4} align="stretch">
         <FormControl>
           <FormLabel>Nombre Producto</FormLabel>
@@ -62,19 +60,29 @@ export default function ProductForm() {
 
         <FormControl>
           <FormLabel>Precio</FormLabel>
-          <NumberInput defaultValue={0.0} onChange={saveProduct}>
+          <NumberInput
+            defaultValue={0.0}
+            onChange={saveProduct}
+            errorBorderColor="red.200"
+            focusBorderColor="green.500"
+          >
             <NumberInputField />
           </NumberInput>
         </FormControl>
 
         <FormControl>
           <FormLabel>Fecha</FormLabel>
-          <Input type="date" defaultValue={Date.now()} onChange={saveProduct} />
+          <Input type="date" onChange={saveProduct} />
         </FormControl>
 
         <FormControl>
           <FormLabel>Cantidad</FormLabel>
-          <NumberInput defaultValue={1} onChange={saveProduct}>
+          <NumberInput
+            defaultValue={1}
+            onChange={saveProduct}
+            errorBorderColor="red.200"
+            focusBorderColor="green.500"
+          >
             <NumberInputField />
           </NumberInput>
         </FormControl>
@@ -85,6 +93,8 @@ export default function ProductForm() {
             type="text"
             placeholder="Coloca la marca del producto"
             onChange={saveProduct}
+            errorBorderColor="red.200"
+            focusBorderColor="green.500"
           />
         </FormControl>
         <Button colorScheme="teal" type="submit" onClick={saveProduct}>

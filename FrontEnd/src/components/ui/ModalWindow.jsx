@@ -9,19 +9,24 @@ import {
   useDisclosure,
   Button,
 } from "@chakra-ui/react";
-
+import { AddIcon } from "@chakra-ui/icons";
 import ProductForm from "../products/ProductForm";
-
 export default function ModalWindow() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
-      <Button onClick={onOpen}>Open Modal</Button>
+      <Button
+        backgroundColor={"green.200"}
+        alignContent={"center"}
+        onClick={onOpen}
+      >
+        Agregar Productos
+        <AddIcon m={"2.5"} />
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Agregar Producto</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <ProductForm m={"1"} />
