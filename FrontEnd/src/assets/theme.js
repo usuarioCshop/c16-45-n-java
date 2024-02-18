@@ -4,7 +4,8 @@ const activeLabelStyles = {
     transform: "scale(0.85) translateY(-20px)"
   };
 
-export const theme = extendTheme({
+
+export const configTheme = extendTheme({
     colors:{
         darkBlue:'#201F4F',
         greyBlue:'#363583',
