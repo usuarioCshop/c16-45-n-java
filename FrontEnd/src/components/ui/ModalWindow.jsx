@@ -3,7 +3,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -19,23 +18,29 @@ export default function ModalWindow() {
         backgroundColor={"green.200"}
         alignContent={"center"}
         onClick={onOpen}
+        mx="2"
+        w="25%"
       >
-        Agregar Productos
-        <AddIcon m={"2.5"} />
+        <AddIcon mx="2" />
+        <p>Categoria</p>
+      </Button>
+      <Button
+        backgroundColor={"green.200"}
+        alignContent={"center"}
+        onClick={onOpen}
+        w="25%"
+      >
+        <AddIcon mx="2" />
+        <p>Producto</p>
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Agregar Producto</ModalHeader>
+          <ModalHeader textAlign="center">Añadir Producto</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <ProductForm m={"1"} />
           </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
