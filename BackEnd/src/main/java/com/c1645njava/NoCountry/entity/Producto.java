@@ -1,21 +1,26 @@
 package com.c1645njava.NoCountry.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "productos")
 public class Producto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false, length = 50)
-    private String nombre;
+    private String detalle;
 
     @Column(nullable = false)
     private double precio;
@@ -23,30 +28,18 @@ public class Producto {
     @Column(nullable = false)
     private LocalDate fechaAlta;
 
-    @Column(nullable = false)
+   /* @Column(nullable = false)
     private int cantidad;
 
-    private String categoria;
+    private Categoria categoria;
+    */
+    private String marca;
 
-    public Producto() {
-    }
+    private String nombreProveedor;
 
-    public Producto(int id, String nombre, double precio, LocalDate fechaAlta, int cantidad, String categoria) {
-        this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.fechaAlta = fechaAlta;
-        this.cantidad = cantidad;
-        this.categoria = categoria;
-    }
+    @Column(nullable = false)
+    private Boolean activo = true;
 
-    @Override
-    public String toString() {
-        return "Producto{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", precio=" + precio +
-                ", fechaAlta=" + fechaAlta +
-                '}';
-    }
+    @Column(length = 1000)
+    private String imagenUrl;
 }
