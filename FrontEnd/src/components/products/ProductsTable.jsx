@@ -12,12 +12,17 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+
 export default function ProductsTable() {
   const [products, setProducts] = useState([]);
 
+  const deleteProduct = (id) => {
+    products.filter((product) => product.id - 1 !== id);
+  };
+
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/listar")
+      .get("https://fakestoreapi.com/products")
       .then((response) => response.data)
       .then((data) => setProducts(data))
       .catch((error) => console.log(error.message));
@@ -25,13 +30,13 @@ export default function ProductsTable() {
 
   return (
     <>
-      <TableContainer p={5}>
-        <Table variant={"striped"} colorScheme="telegram" size="md">
-          <Thead borderRadius={"8"}>
+      <TableContainer p="2.5" position="relative" top="8rem" maxW="100%">
+        <Table variant={"striped"} colorScheme="telegram">
+          <Thead>
             <Tr>
               <Th>imagen</Th>
               <Th>nombre filtrar</Th>
-              <Th>c&oacute;digo</Th>
+              <Th>código</Th>
               <Th>categoria</Th>
               <Th>precio</Th>
               <Th>cantidad</Th>
@@ -43,14 +48,18 @@ export default function ProductsTable() {
               <Tr key={index}>
                 <Td>{product.imagenUrl}</Td>
                 <Td>{product.detalle}</Td>
-                <Td>{product.precio}$</Td>
+                <Td>$ {product.precio}</Td>
                 <Td>{product.cantidad}</Td>
                 <Td>
                   <ButtonGroup gap={"4"}>
                     <Button m={5} size={"xs"}>
                       <EditIcon />
                     </Button>
-                    <Button m={5} size={"xs"}>
+                    <Button
+                      m={5}
+                      size={"xs"}
+                      onClick={() => deleteProduct(index)}
+                    >
                       <DeleteIcon />
                     </Button>
                   </ButtonGroup>

@@ -1,78 +1,70 @@
+import { useEffect } from "react";
 import {
   Image,
-  HStack,
+  Flex,
   Box,
-  Link,
   Avatar,
-  useTheme,
   useColorMode,
   IconButton,
-  Input,
-  FormControl,
-  InputRightElement,
-  InputGroup,
+  useTheme,
+  WrapItem,
+  Menu,
+  MenuList,
+  MenuButton,
+  MenuItem,
+  Button,
 } from "@chakra-ui/react";
-import { SearchIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const theme = useTheme();
-  console.log(colorMode);
-  console.log(theme);
-  const bg =
-    colorMode === "dark" ? theme.colors.blackAlpha : theme.colors.white;
-  // const color =
-  //   colorMode === "dark" ? theme.colors.dark.color : theme.colors.light.color;
   const toggleIcon = colorMode === "dark" ? <SunIcon /> : <MoonIcon />;
+  useEffect(() => {
+    colorMode === "dark" ? theme.colors.darkBlue : theme.colors.white;
+  }, [colorMode, theme]);
+
+  const items = ["Account", "Dashboard", "Cerrar Sesion"];
   return (
-    <HStack
+    <Flex
       w="100%"
-      bg={"gray.50"}
+      bgGradient="linear-gradient(180deg, #201F4F 0%, #363583 100%)"
+      color={"white"}
       justifyContent="space-between"
-      p={"5"}
-      marginBottom={"5"}
       alignItems="center"
+      p="5"
+      position="absolute"
+      top="0"
+      left="0"
     >
-      <Box>
-        <Image
-          boxSize="80px"
-          objectFit="cover"
-          src="@/assets/react.svg"
-          alt="brand_logo"
-        />
+      <Image
+        boxSize="50px"
+        objectFit="cover"
+        src="https://bit.ly/dan-abramov"
+        alt="brand_logo"
+      />
+      <Box display="flex" alignItems="center" mx="5">
+        <WrapItem mx="2">
+          <Avatar name="username" src="https://bit.ly/dan-abramov" />
+        </WrapItem>
+        <Menu>
+          <MenuButton
+            as={Button}
+            color="whitesmoke"
+            variant="flushed"
+            _hover={{ color: "lightPurple" }}
+            rightIcon={<ChevronDownIcon />}
+          >
+            Administrador
+          </MenuButton>
+          <MenuList color="darkblue">
+            {items.map((item, idx) => (
+              <MenuItem key={idx}>{item}</MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+        <IconButton icon={toggleIcon} onClick={toggleColorMode} mx="3" />
       </Box>
-      <Box
-        w="80%"
-        bg="red.200"
-        display="flex"
-        justifyContent="space-around"
-        p={"2"}
-      >
-        <FormControl>
-          <InputGroup>
-            <Input type="search" placeholder="search products" size="sm" />
-            <InputRightElement>
-              <IconButton
-                h="1.75rem"
-                size="sm"
-                aria-label="searchbar"
-                icon={<SearchIcon />}
-              ></IconButton>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
-        <Link>filter</Link>
-        <IconButton
-          icon={toggleIcon}
-          onClick={toggleColorMode}
-          bg={bg}
-          _hover={{ color: "purple63" }}
-        ></IconButton>
-        <Link>
-          <Avatar name="username" src="user.png" />
-          User Administrator
-        </Link>
-      </Box>
-    </HStack>
+    </Flex>
   );
 }
