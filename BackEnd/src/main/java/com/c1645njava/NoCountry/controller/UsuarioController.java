@@ -1,6 +1,5 @@
 package com.c1645njava.NoCountry.controller;
 
-import com.c1645njava.NoCountry.dto.LoginDTO;
 import com.c1645njava.NoCountry.dto.UsuarioDTO;
 import com.c1645njava.NoCountry.entity.Usuario;
 import com.c1645njava.NoCountry.service.UsuarioService;
@@ -10,10 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuario")
-@CrossOrigin(origins = "http://localhost:5173/")
+@RequestMapping("/usuarios")
 public class UsuarioController {
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
 
     @Autowired
@@ -22,21 +20,14 @@ public class UsuarioController {
     }
 
 
-    @PostMapping("/login")
-    public boolean usuarioLogin(@RequestBody LoginDTO usuario){
-        if(usuario.email().equals("omar.virili@gmail.com")&& usuario.password().equals("1234")){
-            return true;
-        }
-        return false;
-    }
     @PostMapping
     public UsuarioDTO crearUsuario(@RequestBody Usuario usuario) {
         return usuarioService.crear(usuario);
     }
 
-    @GetMapping("/{id}")
-    public UsuarioDTO getUsuario(@PathVariable String id) {
-        return usuarioService.getUsuario(id);
+    @GetMapping("/por-correo")
+    public UsuarioDTO getUsuario(@RequestParam String correo) {
+        return usuarioService.getUsuario(correo);
     }
 
     @GetMapping
@@ -44,18 +35,13 @@ public class UsuarioController {
         return usuarioService.getUsuarios();
     }
 
-    @PutMapping("/{id}")
-    public UsuarioDTO update(@PathVariable String id, @RequestBody Usuario usuario) {
-        return usuarioService.update(id, usuario);
+    @PutMapping("/por-correo")
+    public UsuarioDTO update(@RequestParam String correo, @RequestBody Usuario usuario) {
+        return usuarioService.update(correo, usuario);
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable String id) {
-        try {
-            usuarioService.delete(id);
-            return "Usuario eliminado";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+    @DeleteMapping("/por-correo")
+    public void delete(@RequestParam String correo) {
+        usuarioService.delete(correo);
     }
 }
