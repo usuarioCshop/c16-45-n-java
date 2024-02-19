@@ -10,7 +10,7 @@ function App() {
   return (
 
     <BrowserRouter>
-    <Container display="flex" alignContent="center" justifyContent="center" minH="100vh"w="100vw">
+    <Container display="flex" alignContent="center" justifyContent="center" minH="100vh" minW="100vw">
         
           <Routes>
             <Route exact path="/" element={<Login />}></Route>

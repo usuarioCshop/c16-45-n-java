@@ -28,9 +28,9 @@ public class Producto {
     @Column(nullable = false)
     private LocalDate fechaAlta;
 
-   /* @Column(nullable = false)
+    @Column(nullable = false)
     private int cantidad;
-
+/*
     private Categoria categoria;
     */
     private String marca;

@@ -16,7 +16,12 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    
+
+    @Override
+    public Categoria crearCategoria(Categoria categoria) {
+        return null;
+    }
+
     @Override
     public List<Categoria> obtenerTodasCategorias() {
         return categoriaRepository.findAll();

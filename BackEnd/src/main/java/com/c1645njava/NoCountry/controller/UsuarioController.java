@@ -1,5 +1,6 @@
 package com.c1645njava.NoCountry.controller;
 
+import com.c1645njava.NoCountry.dto.LoginDTO;
 import com.c1645njava.NoCountry.dto.UsuarioDTO;
 import com.c1645njava.NoCountry.entity.Usuario;
 import com.c1645njava.NoCountry.service.UsuarioService;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class UsuarioController {
     private UsuarioService usuarioService;
 
@@ -20,6 +22,13 @@ public class UsuarioController {
     }
 
 
+    @PostMapping("/login")
+    public boolean usuarioLogin(@RequestBody LoginDTO usuario){
+        if(usuario.email().equals("omar.virili@gmail.com")&& usuario.password().equals("1234")){
+            return true;
+        }
+        return false;
+    }
     @PostMapping
     public UsuarioDTO crearUsuario(@RequestBody Usuario usuario) {
         return usuarioService.crear(usuario);
