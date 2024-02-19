@@ -10,7 +10,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import ProductForm from "../products/ProductForm";
+import ProductForm from "../products/ProductForm.jsx";
 export default function ModalWindow() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
