@@ -12,7 +12,7 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-
+const URL_BASE = "http://localhost:8080/"
 export default function ProductsTable() {
   const [products, setProducts] = useState([]);
 
@@ -22,7 +22,7 @@ export default function ProductsTable() {
 
   useEffect(() => {
     axios
-      .get("https://fakestoreapi.com/products")
+      .get(URL_BASE+"api/listar")
       .then((response) => response.data)
       .then((data) => setProducts(data))
       .catch((error) => console.log(error.message));
@@ -48,6 +48,8 @@ export default function ProductsTable() {
               <Tr key={index}>
                 <Td>{product.imagenUrl}</Td>
                 <Td>{product.detalle}</Td>
+                <Td>{product.codigo}</Td>
+                <Td>{product.categoria}</Td>
                 <Td>$ {product.precio}</Td>
                 <Td>{product.cantidad}</Td>
                 <Td>
