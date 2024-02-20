@@ -16,7 +16,6 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
             value = {NoSuchElementException.class}
     )
     protected ResponseEntity<Object> handleNotFound(RuntimeException e, WebRequest request) {
-        String body = "The element was not found";
         return handleExceptionInternal(
                 e,
                 null,
