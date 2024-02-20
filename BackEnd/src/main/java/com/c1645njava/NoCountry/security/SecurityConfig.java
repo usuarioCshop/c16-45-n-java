@@ -27,10 +27,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authz -> {
-                    authz.requestMatchers("/api/auth/**").permitAll();
+                    authz.requestMatchers("/**").permitAll();
+                    //authz.requestMatchers("/api/auth/**").permitAll();
                     //We can give rights to admin class with pre-authorize but this is another approach.
-                    authz.requestMatchers("/admin/*").hasRole("ADMIN");
-                    authz.anyRequest().authenticated();
+                    //authz.requestMatchers("/admin/*").hasRole("ADMIN");
+                    //authz.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
