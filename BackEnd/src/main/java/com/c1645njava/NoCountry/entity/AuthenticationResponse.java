@@ -1,4 +1,4 @@
-package com.c1645njava.NoCountry.security;
+package com.c1645njava.NoCountry.entity;
 
 public class AuthenticationResponse {
     private String token;
