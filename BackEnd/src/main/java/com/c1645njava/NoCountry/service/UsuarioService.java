@@ -62,7 +62,7 @@ public class UsuarioService {
         return new UsuarioDTO(
                 usuario.getNombre(),
                 usuario.getCorreo(),
-                usuario.getRol()
+                usuario.getRol().name()
         );
     }
 }

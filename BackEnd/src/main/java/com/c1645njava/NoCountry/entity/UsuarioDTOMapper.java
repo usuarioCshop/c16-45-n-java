@@ -12,7 +12,7 @@ public class UsuarioDTOMapper implements Function<Usuario, UsuarioDTO> {
         return new UsuarioDTO(
                 usuario.getNombre(),
                 usuario.getCorreo(),
-                usuario.getRol()
+                usuario.getRol().name()
         );
     }
 }
