@@ -1,9 +1,7 @@
-import { ColorModeProvider } from '@chakra-ui/color-mode'
-import { Container, Heading } from '@chakra-ui/layout'
-
-import ProductsTable from './ProductsTable.jsx'
-import Navbar from '../navbar/Navbar.jsx'
-import Header from '../header/Header.jsx'
+import { Container } from "@chakra-ui/layout";
+import ProductsTable from "./ProductsTable.jsx";
+import Navbar from "../navbar/Navbar.jsx";
+import Header from "../header/Header.jsx";
 
 export const Principal = () => {
   return (
@@ -12,5 +10,5 @@ export const Principal = () => {
       <Header />
       <ProductsTable />
     </Container>
-  )
-}
+  );
+};

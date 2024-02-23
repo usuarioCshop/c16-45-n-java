@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import validate from "@/utils/validation";
+import { useState } from "react";
+import { PropTypes } from "prop-types";
 import {
   Button,
   Box,
   Input,
-  VStack,
   FormControl,
   FormLabel,
   NumberInput,
   NumberInputField,
   Select,
 } from "@chakra-ui/react";
-// import axios from "axios";
+import { useFormik, yupToFormErrors } from "formik";
+import * as Yup from "yup";
 
-export default function ProductForm() {
+export default function ProductForm({ showform }) {
   const [product, setProduct] = useState({
     detalle: "",
     precio: 0.0,
@@ -21,62 +21,52 @@ export default function ProductForm() {
     fecha: "",
     cantidad: 0,
     marca: "",
-    imagen: "",
+    imagenUrl: "",
   });
 
-  const [enable, setEnable] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    // axios
-    //   .post("http://localhost:8080/api/formulario", product)
-    //   .then((response) => console.log(response.data))
-    //   .catch((error) => console.log(error.message));
-    const validateProduct = validate(product);
-    console.log(validateProduct);
-    setError(validateProduct);
-    if (!error) {
-      setEnable(true);
-    }
-  }, [product, error, enable]);
-
-  const getProductDetails = (e) => {
-    switch (e.target.name) {
-      case "productName":
-        return setProduct((prevProd) => {
-          return { ...prevProd, detalle: e.target.value };
-        });
-      case "category":
-        return setProduct((prevProd) => {
-          return { ...prevProd, categoria: e.target.value };
-        });
-      case "date":
-        return setProduct((prevProd) => {
-          return {
-            ...prevProd,
-            fecha: e.target.value,
-          };
-        });
-      case "brand":
-        return setProduct((prevProd) => {
-          return { ...prevProd, marca: e.target.value };
-        });
-      case "productImage":
-        return setProduct((prevProd) => {
-          return { ...prevProd, imagen: e.target.value };
-        });
-      default:
-        return product;
-    }
-  };
-
-  const toSaveProduct = () => {
-    console.log(product);
-  };
-
-  const toCancellProduct = (e) => {
-    console.log(e.target);
-  };
+  const formik = useFormik({
+    initialValues: {
+      productName: "",
+      price: 0.0,
+      category: "",
+      date: Date.now(),
+      quantity: 1,
+      brand: "",
+      image: "",
+    },
+    validationSchema: Yup.object({
+      productName: Yup.string().required("Required"),
+      price: Yup.number()
+        .required("Coloca un precio en formato 0.00")
+        .positive()
+        .round("floor"),
+      category: Yup.string().required(
+        "Selecciona una opcion o crea una categoria nueva"
+      ),
+      date: Yup.date().default(() => Date.now().toLocaleString("es-BO")),
+      quantity: Yup.number().min(1).integer().positive(),
+      brand: Yup.string().required(
+        "Coloque el nombre de la marca correspondiente"
+      ),
+      image: Yup.string().required(
+        "Se require el enlace de la imagen del producto"
+      ),
+    }),
+    onSubmit(values) {
+      setProduct(() => {
+        return {
+          detalle: values.productName,
+          precio: values.price,
+          categoria: values.category,
+          fechaAlta: values.date,
+          cantidad: values.quantity,
+          marca: values.brand,
+          imagenUrl: values.image,
+        };
+      });
+      console.log(product);
+    },
+  });
 
   return (
     <Box
@@ -88,111 +78,122 @@ export default function ProductForm() {
       borderRadius="md"
       boxShadow="2xl"
     >
-      <VStack spacing={4} align="stretch">
-        <FormControl>
-          <FormLabel>Nombre Producto</FormLabel>
+      <form onSubmit={formik.handleSubmit}>
+        <FormControl variant="floating" isRequired my="5">
           <Input
             type="text"
-            placeholder="Enter your name"
-            variant="filled"
-            errorBorderColor="red.200"
+            placeholder="Ingresa el nombre del producto"
             focusBorderColor="green.500"
-            name="productName"
-            onChange={getProductDetails}
+            id="productName"
           />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Precio</FormLabel>
-          <NumberInput
-            onChange={(value) =>
-              setProduct((prev) => {
-                return { ...prev, precio: parseFloat(value) };
-              })
-            }
+          <FormLabel
+            htmlFor="productName"
+            fontWeight="bold"
+            backgroundColor="white"
+            w="80%"
           >
-            <NumberInputField
-              name="price"
-              errorBorderColor="red.200"
-              focusBorderColor="green.500"
-            />
+            Nombre Producto
+          </FormLabel>
+        </FormControl>
+        {console.log(yupToFormErrors(formik.errors))}
+
+        <FormControl variant="floating" isRequired my="5">
+          <NumberInput errorBorderColor="red.200" focusBorderColor="green.500">
+            <NumberInputField id="price" />
           </NumberInput>
+          <FormLabel htmlFor="price" fontWeight="bold" backgroundColor="white">
+            Precio
+          </FormLabel>
         </FormControl>
 
-        <FormControl>
-          <FormLabel>Categoria</FormLabel>
+        <FormControl variant="floating" isRequired my="5">
           <Select
-            variant="filled"
             size="md"
             placeholder="Selecciona una categoria"
-            name="category"
-            onChange={getProductDetails}
+            id="category"
+            focusBorderColor="green.500"
           >
             <option value="categoria1">Categoria1</option>
             <option value="categoria2">Categoria2</option>
             <option value="categoria3">Categoria3</option>
             <option value="categoria4">Categoria4</option>
           </Select>
+          <FormLabel
+            htmlFor="category"
+            fontWeight="bold"
+            backgroundColor="white"
+          >
+            Categoria
+          </FormLabel>
         </FormControl>
 
-        <FormControl>
-          <FormLabel>Fecha</FormLabel>
-          <Input type="date" onChange={getProductDetails} name="date" />
+        <FormControl variant="floating" isRequired my="5">
+          <Input type="date" id="date" focusBorderColor="green.500" />
+          <FormLabel htmlFor="date" fontWeight="bold" backgroundColor="white">
+            Fecha
+          </FormLabel>
         </FormControl>
 
-        <FormControl>
-          <FormLabel>Cantidad</FormLabel>
+        <FormControl variant="floating" isRequired my="5">
           <NumberInput
             defaultValue={1}
-            onChange={(value) =>
-              setProduct((prev) => {
-                return { ...prev, cantidad: parseInt(value) };
-              })
-            }
+            errorBorderColor="red.200"
+            focusBorderColor="green.500"
           >
-            <NumberInputField
-              errorBorderColor="red.200"
-              focusBorderColor="green.500"
-            />
+            <NumberInputField id="quantity" /> cantidad
           </NumberInput>
+          <FormLabel
+            htmlFor="quantity"
+            fontWeight="bold"
+            backgroundColor="white"
+          >
+            Cantidad
+          </FormLabel>
         </FormControl>
 
-        <FormControl>
-          <FormLabel>Marca</FormLabel>
+        <FormControl variant="floating" isRequired my="5">
           <Input
             type="text"
-            placeholder="Coloca la imagen de tu producto"
-            onChange={getProductDetails}
-            errorBorderColor="red.200"
+            placeholder="Ingresa la marca del producto"
             focusBorderColor="green.500"
-            name="brand"
+            id="brand"
           />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Imagen</FormLabel>
-          <Input
-            type="text"
-            placeholder="Coloca la url de la imagen"
-            onChange={getProductDetails}
-            errorBorderColor="red.200"
-            focusBorderColor="green.500"
-            name="productImage"
-          />
-        </FormControl>
-        {enable && (
-          <Button
-            colorScheme="teal"
-            type="submit"
-            onClick={toSaveProduct}
-            isDisabled={enable}
+          <FormLabel
+            htmlFor="brand"
+            fontWeight="bold"
+            backgroundColor="white"
+            w="80%"
           >
-            Confirmar
-          </Button>
-        )}
-        <Button colorScheme="red" type="submit" onClick={toCancellProduct}>
+            Marca
+          </FormLabel>
+        </FormControl>
+        <FormControl variant="floating" isRequired my="5">
+          <Input
+            type="text"
+            focusBorderColor="green.500"
+            id="productImage"
+            placeholder="URL: http://example.com/imagen.png"
+          />
+          <FormLabel
+            htmlFor="productImage"
+            fontWeight="bold"
+            backgroundColor="white"
+            w="80%"
+          >
+            Imagen Producto
+          </FormLabel>
+        </FormControl>
+        <Button colorScheme="teal" type="submit" isDisabled={true}>
+          Confirmar
+        </Button>
+        <Button colorScheme="red" type="submit" onClick={showform}>
           Cancelar
         </Button>
-      </VStack>
+      </form>
     </Box>
   );
 }
+
+ProductForm.propTypes = {
+  showform: PropTypes.func,
+};

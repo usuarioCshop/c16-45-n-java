@@ -39,7 +39,7 @@ export default function ModalWindow() {
           <ModalHeader textAlign="center">Añadir Producto</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ProductForm m={"1"} />
+            <ProductForm m={"1"} showform={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
