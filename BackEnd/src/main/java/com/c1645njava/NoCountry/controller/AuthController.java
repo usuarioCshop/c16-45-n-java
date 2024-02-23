@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin(origins="https://c16-45-n-java-production.up.railway.app/")
+@CrossOrigin(origins="https://http://localhost:5173/api/auth/Login")
+//@CrossOrigin(origins="https://c16-45-n-java-production.up.railway.app/")
 @RequestMapping("/api/auth")
 public class AuthController {
     private final UsuarioAuthService authService;

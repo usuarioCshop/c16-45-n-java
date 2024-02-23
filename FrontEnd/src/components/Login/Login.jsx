@@ -15,7 +15,7 @@ import {
 import { Field, Form, Formik } from "formik";
 import { useContext, useState } from "react";
 import { LoginContext } from "../context/LoginContext";
-
+import { BASE_URL } from "@/utils/apiconnect";
 import { useNavigate } from "react-router-dom";
 //const URI_BASE_API="http://localhost:8080/api/"
 
@@ -32,7 +32,7 @@ export const Login = () => {
 
   async function enviarDatosAlaApi(values) {
     try {
-      const response = await fetch(import.meta.env.VITE_API+"auth/login", {
+      const response = await fetch(BASE_URL.post("auth/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
