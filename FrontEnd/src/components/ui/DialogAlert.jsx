@@ -14,9 +14,15 @@ import {
 
 export default function DialogAlert({ isOpen, onClose, product }) {
   const cancelRef = useRef();
-  // const { deleteProducts } = useContext(ProductContext);
-  const eliminarProducto = product;
-  console.log(eliminarProducto);
+  const { deleteProducts } = useContext(ProductContext);
+
+  const delProducts = (prod) => {
+    console.log(prod);
+    setTimeout(() => {
+      deleteProducts(prod);
+      onClose();
+    }, 2000);
+  };
 
   return (
     <AlertDialog
@@ -38,11 +44,7 @@ export default function DialogAlert({ isOpen, onClose, product }) {
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button
-              colorScheme="red"
-              onClick={() => console.log("ejecutando eliminar")}
-              ml={3}
-            >
+            <Button colorScheme="red" onClick={delProducts(product)} ml={3}>
               Delete
             </Button>
             <AlertDialogCloseButton />

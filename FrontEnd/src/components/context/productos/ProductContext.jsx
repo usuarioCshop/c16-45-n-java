@@ -30,13 +30,14 @@ export default function ProductContextProvider({ children }) {
     });
   };
 
-  const deleteProducts = (id) => {
-    // BASE_URL.delete(`eliminar/${product.id}`);
-    console.log(id);
+  const deleteProducts = (itemDeleted) => {
+    BASE_URL.delete(`eliminar/${itemDeleted.id}`);
     setProductManager((prev) => {
       return {
         ...prev,
-        products: prev.products.filter((product) => product.id !== id),
+        products: prev.products.filter(
+          (product) => product.id !== itemDeleted.id
+        ),
       };
     });
   };

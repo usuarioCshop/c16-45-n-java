@@ -73,7 +73,6 @@ export default function ProductForm({ showform }) {
             imagenUrl: values.image,
           };
           setTimeout(() => {
-            // BASE_URL.post("nuevo", product);
             addProducts(product);
             showform();
           }, 3000);
