@@ -12,7 +12,7 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-const URL_BASE = "http://localhost:8080/"
+//const URL_BASE = "http://localhost:8080/"
 export default function ProductsTable() {
   const [products, setProducts] = useState([]);
 
@@ -22,7 +22,7 @@ export default function ProductsTable() {
 
   useEffect(() => {
     axios
-      .get(URL_BASE+"api/listar")
+      .get(import.meta.env.VITE_API+"listar")
       .then((response) => response.data)
       .then((data) => setProducts(data))
       .catch((error) => console.log(error.message));

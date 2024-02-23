@@ -17,7 +17,7 @@ import { useContext, useState } from "react";
 import { LoginContext } from "../context/LoginContext";
 
 import { useNavigate } from "react-router-dom";
-const URI_BASE_API="http://localhost:8080/api/"
+//const URI_BASE_API="http://localhost:8080/api/"
 
 export const Login = () => {
   const [error, setError] = useState("");
@@ -32,7 +32,7 @@ export const Login = () => {
 
   async function enviarDatosAlaApi(values) {
     try {
-      const response = await fetch(URI_BASE_API+"auth/login", {
+      const response = await fetch(import.meta.env.VITE_API+"auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
