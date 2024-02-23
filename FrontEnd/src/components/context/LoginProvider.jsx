@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { LoginContext } from "./LoginContext";
-import axios from "axios";
 
 export const LoginProvider = ({ children }) => {
  

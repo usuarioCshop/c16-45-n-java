@@ -4,7 +4,7 @@ import Searchbar from "./Searchbar";
 import ModalWindow from "@/components/ui/ModalWindow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { BASE_URL } from "@/utils/apiconnect";
+import { BASE_URL } from "@/utils/connectApi";
 
 export default function Header() {
   const [findProduct, setFindProduct] = useState(null);
