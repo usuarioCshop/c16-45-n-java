@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "serve dist -s -n -L -p $PORT",
+    "start": "env-cmd -f ./environments/.env.development serve dist -s -n -L -p $PORT",
     "start:dev": "env-cmd -f ./environments/.env.development vite",
     "dev": "vite",
     "build": "vite build",
