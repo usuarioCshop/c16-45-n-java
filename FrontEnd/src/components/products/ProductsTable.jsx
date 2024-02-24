@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   TableContainer,
   Table,
@@ -11,69 +11,117 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { BASE_URL } from "@/utils/apiconnect";
+
+import { ProductContext } from "@/components/context/productos/ProductContext";
+import EditModal from "@/components/ui/EditModal";
+import DialogAlert from "../ui/DialogAlert";
 
 export default function ProductsTable() {
-  const [products, setProducts] = useState([]);
-  const deleteProduct = (id) => {
-    //borrando elemento
-    products.filter((product) => product.id !== id + 1);
+  //Products List
+  const { products } = useContext(ProductContext);
+
+  // Delete Product
+  const [alertModal, setAlertModal] = useState(false);
+  const [choosedProduct, setChoosedProduct] = useState(null);
+
+  const openAlertModal = (product) => {
+    setChoosedProduct(product);
+    setAlertModal(true);
   };
 
-  const editProduct = (id) => {
+  const closeAlertModal = () => {
+    setAlertModal(false);
+  };
+
+  const deleteProduct = (row) => {
+    const deleteProduct = products.find((_, index) => index === row);
+    openAlertModal(deleteProduct);
+  };
+
+  const editProduct = (row) => {
     //identificando elemento
-    const getProduct = products.find((product) => product.id === id + 1);
-    console.log(getProduct);
+    const productToEdit = products.find((_, idx) => idx === row);
+    openEditModal(productToEdit);
   };
 
-  useEffect(() => {
-    BASE_URL.get("listar")
-      .then((response) => response.data)
-      .then((data) => setProducts(data))
-      .catch((error) => console.log(error.message));
-  }, []);
+  // EditModal state
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const openEditModal = (product) => {
+    setSelectedProduct(product);
+    setEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setEditModalOpen(false);
+  };
+
+  const handlerSubmit = (editedProduct) => {
+    // BASE_URL.put(`editar/${product.id}`, getProduct).then((response) =>
+    //   console.log(response.data)
+    // );
+    console.log(editedProduct);
+  };
 
   return (
-    <TableContainer p="2.5" position="relative" top="8rem" maxW="100%">
-      <Table variant={"striped"} colorScheme="telegram">
-        <Thead>
-          <Tr>
-            <Th>imagen</Th>
-            <Th>nombre filtrar</Th>
-            <Th>código</Th>
-            <Th>categoria</Th>
-            <Th>precio</Th>
-            <Th>cantidad</Th>
-            <Th>acciones</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {products.map((product, index) => (
-            <Tr key={product.id}>
-              <Td>{product.imagenUrl}</Td>
-              <Td>{product.detalle}</Td>
-              <Td>{product.codigo}</Td>
-              <Td>{product.categoria}</Td>
-              <Td>$ {product.precio}</Td>
-              <Td>{product.cantidad}</Td>
-              <Td>
-                <ButtonGroup gap={"4"}>
-                  <Button m={5} size={"xs"} onClick={() => editProduct(index)}>
-                    <EditIcon />
-                  </Button>
-                  <Button
-                    m={5}
-                    size={"xs"}
-                    onClick={() => deleteProduct(index)}
-                  >
-                    <DeleteIcon />
-                  </Button>
-                </ButtonGroup>
-              </Td>
+    <>
+      <TableContainer p="2.5" position="relative" top="8rem" maxW="100%">
+        <Table variant={"striped"} colorScheme="telegram">
+          <Thead>
+            <Tr>
+              <Th>imagen</Th>
+              <Th>nombre filtrar</Th>
+              <Th>código</Th>
+              <Th>categoria</Th>
+              <Th>precio</Th>
+              <Th>cantidad</Th>
+              <Th>acciones</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+          </Thead>
+          <Tbody>
+            {products.map((product, index) => (
+              <Tr key={product.id}>
+                <Td>{product.imagenUrl}</Td>
+                <Td>{product.detalle}</Td>
+                <Td>{product.codigo}</Td>
+                <Td>{product.categoria}</Td>
+                <Td>$ {product.precio}</Td>
+                <Td>{product.cantidad}</Td>
+                <Td>
+                  <ButtonGroup gap={"4"}>
+                    <Button
+                      m={5}
+                      size={"xs"}
+                      onClick={() => editProduct(index)}
+                    >
+                      <EditIcon />
+                    </Button>
+                    <Button
+                      m={5}
+                      size={"xs"}
+                      onClick={() => deleteProduct(index)}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </ButtonGroup>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+      <EditModal
+        isOpen={editModalOpen}
+        onClose={closeEditModal}
+        initialValues={selectedProduct}
+        onSubmit={handlerSubmit}
+      />
+      <DialogAlert
+        isOpen={alertModal}
+        onClose={closeAlertModal}
+        product={choosedProduct}
+      />
+    </>
   );
 }
