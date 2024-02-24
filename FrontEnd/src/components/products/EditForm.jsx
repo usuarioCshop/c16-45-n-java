@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { PropTypes } from "prop-types";
 import {
   Button,
@@ -12,11 +11,10 @@ import {
 import PopoverModal from "@/components/ui/PopoverModal";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { ProductContext } from "@/components/context/productos/ProductContext";
-export default function ProductForm({ showform }) {
-  let { product, addProducts } = useContext(ProductContext);
-
+// import { BASE_URL } from "@/utils/connectApi";
+export default function EditForm({ showform, values, submitHandler }) {
   const handlerButton = (errors) => {
+    console.log(errors);
     return Object.keys(errors).length !== 0;
   };
 
@@ -31,61 +29,44 @@ export default function ProductForm({ showform }) {
       boxShadow="2xl"
     >
       <Formik
-        initialValues={{
-          productName: "",
-          price: 0.0,
-          category: "",
-          date: "",
-          quantity: 1,
-          brand: "",
-          image: "",
-        }}
+        initialValues={values}
         validationSchema={Yup.object({
-          productName: Yup.string().required("Coloca el nombre del producto"),
-          price: Yup.number()
+          detalle: Yup.string().required("Coloca el nombre del producto"),
+          precio: Yup.number()
             .required("Coloca un precio en formato 0.00")
             .round("floor"),
-          category: Yup.string().required(
+          categoria: Yup.string().required(
             "Selecciona una opcion o crea una categoria nueva"
           ),
-          date: Yup.date()
+          fechaAlta: Yup.date()
             .default(() => Date.now())
             .required("Elige o coloca una fecha"),
-          quantity: Yup.number()
+          cantidad: Yup.number()
             .min(1)
             .integer()
             .required("Coloca la cantidad de productos"),
-          brand: Yup.string().required(
+          marca: Yup.string().required(
             "Coloque el nombre de la marca correspondiente"
           ),
-          image: Yup.string().required(
+          imagenUrl: Yup.string().required(
             "Se require el enlace de la imagen del producto"
           ),
         })}
         onSubmit={(values) => {
-          product = {
-            detalle: values.productName,
-            precio: values.price,
-            categoria: values.category,
-            fechaAlta: values.date,
-            cantidad: values.quantity,
-            marca: values.brand,
-            imagenUrl: values.image,
-          };
-          setTimeout(() => {
-            addProducts(product);
-            showform();
-          }, 3000);
+          submitHandler(values);
+          showform();
         }}
       >
         {(props) => (
           <Form onSubmit={props.handleSubmit}>
+            {console.log(props.initialValues)}
             <FormControl variant="floating" isRequired my="5">
               <Field
                 as={Input}
                 type="text"
-                placeholder="Ingresa el nombre del producto"
+                placeholder={props.values.detalle}
                 focusBorderColor="green.500"
+                value={props.getFieldProps("productName").value}
                 onChange={props.handleChange}
                 name="productName"
               />
@@ -103,8 +84,10 @@ export default function ProductForm({ showform }) {
               <Field
                 as={Input}
                 type="number"
+                placeholder={props.values.precio}
                 onChange={props.handleChange}
                 focusBorderColor="green.500"
+                value={props.getFieldProps("price").value}
                 name="price"
               />
               <FormLabel
@@ -119,9 +102,10 @@ export default function ProductForm({ showform }) {
             <FormControl variant="floating" isRequired my="5">
               <Field
                 as={Select}
-                placeholder="Selecciona una categoria"
                 name="category"
                 focusBorderColor="green.500"
+                placeholder={props.values.categoria}
+                value={props.getFieldProps("category").value}
               >
                 <option value="categoria1">Categoria1</option>
                 <option value="categoria2">Categoria2</option>
@@ -143,8 +127,10 @@ export default function ProductForm({ showform }) {
                 as={Input}
                 type="date"
                 name="date"
+                placeholder={props.values.fechaAlta}
                 focusBorderColor="green.500"
                 onChange={props.handleChange}
+                value={props.getFieldProps("date").value}
               />
               <FormLabel
                 htmlFor="date"
@@ -159,9 +145,11 @@ export default function ProductForm({ showform }) {
               <Field
                 as={Input}
                 type="number"
+                placeholder={props.values.cantidad}
                 onChange={props.handleChange}
                 name="quantity"
                 focusBorderColor="green.500"
+                value={props.getFieldProps("quantity").value}
               />
               <FormLabel
                 htmlFor="quantity"
@@ -176,10 +164,11 @@ export default function ProductForm({ showform }) {
               <Field
                 as={Input}
                 type="text"
-                placeholder="Ingresa la marca del producto"
                 focusBorderColor="green.500"
+                placeholder={props.values.marca}
                 onChange={props.handleChange}
                 name="brand"
+                value={props.getFieldProps("brand").value}
               />
               <FormLabel
                 htmlFor="brand"
@@ -198,7 +187,8 @@ export default function ProductForm({ showform }) {
                 focusBorderColor="green.500"
                 name="image"
                 onChange={props.handleChange}
-                placeholder="URL: http://example.com/imagen.png"
+                placeholder={props.values.imagenUrl}
+                value={props.getFieldProps("image").value}
               />
               <FormLabel
                 htmlFor="image"
@@ -216,7 +206,7 @@ export default function ProductForm({ showform }) {
                 type="submit"
                 isDisabled={handlerButton(props.errors)}
               >
-                Confirmar
+                Modificar
               </Button>
               <Button colorScheme="red" type="submit" onClick={showform}>
                 Cancelar
@@ -229,9 +219,12 @@ export default function ProductForm({ showform }) {
   );
 }
 
-ProductForm.propTypes = {
+EditForm.propTypes = {
   showform: PropTypes.func,
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   errors: PropTypes.func,
+  submitHandler: PropTypes.func,
+  values: PropTypes.object,
+  initialValues: PropTypes.object,
 };
