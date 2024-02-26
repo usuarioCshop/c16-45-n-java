@@ -1,44 +1,40 @@
-import { useRef } from "react";
-
+import { useContext, useRef, useState } from "react";
+import { PropTypes } from "prop-types";
 import {
   Popover,
-  PopoverTrigger,
   PopoverContent,
   PopoverArrow,
   PopoverCloseButton,
   FocusLock,
-  IconButton,
   Input,
   ButtonGroup,
   FormControl,
   FormLabel,
   Button,
-  useDisclosure,
+  FormErrorMessage,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
-export default function PopoverModal() {
-  const { onOpen, onClose, isOpen } = useDisclosure();
-  const newCategory = useRef(null);
+import { CategoryContext } from "@/components/context/productos/CategoriesContext";
 
+export default function PopoverModal({ isOpen, onClose }) {
+  const newCategory = useRef(null);
+  const { addNewCategory } = useContext(CategoryContext);
+  const [error, setError] = useState(null);
+
+  const saveCategory = () => {
+    if (newCategory.current) {
+      addNewCategory(newCategory.current.value);
+    } else {
+      setError({ message: "agregue una nueva categoria" });
+    }
+    setTimeout(() => onClose(), 3000);
+  };
   return (
     <Popover
       isOpen={isOpen}
-      initialFocusRef={newCategory}
-      onOpen={onOpen}
       onClose={onClose}
       placement="right"
       closeOnBlur={false}
     >
-      <PopoverTrigger>
-        <ButtonGroup>
-          <IconButton
-            size="sm"
-            icon={<AddIcon />}
-            aria-label="Agregar Nueva Categoria"
-          />
-          Agregar Nueva Categoria
-        </ButtonGroup>
-      </PopoverTrigger>
       <PopoverContent p={5}>
         <FocusLock returnFocus persistentFocus={false}>
           <FormControl variant="floating" my="5" size="sm">
@@ -46,6 +42,7 @@ export default function PopoverModal() {
               type="text"
               focusBorderColor="green.500"
               placeholder="agrega tu categoria"
+              ref={newCategory}
             />
             <FormLabel
               htmlFor="productImage"
@@ -55,11 +52,12 @@ export default function PopoverModal() {
               Nueva Categoria
             </FormLabel>
           </FormControl>
+          {error && <FormErrorMessage value={error.message} />}
           <ButtonGroup display="flex" justifyContent="flex-end">
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button isDisabled colorScheme="teal">
+            <Button colorScheme="teal" onClick={saveCategory}>
               Save
             </Button>
           </ButtonGroup>
@@ -70,3 +68,8 @@ export default function PopoverModal() {
     </Popover>
   );
 }
+
+PopoverModal.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+};

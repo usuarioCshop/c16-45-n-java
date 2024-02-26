@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import {
   Button,
@@ -11,11 +12,23 @@ import {
 import PopoverModal from "@/components/ui/PopoverModal";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-// import { BASE_URL } from "@/utils/connectApi";
+import { BASE_URL } from "@/utils/connectApi";
+
 export default function EditForm({ showform, values, submitHandler }) {
+  const [openPopover, setOpenPopover] = useState(false);
+
+  useEffect(() => {
+    BASE_URL.get("categorias")
+      .then((response) => console.log(response.data))
+      .catch((error) => console.log(error));
+  });
+
   const handlerButton = (errors) => {
-    console.log(errors);
     return Object.keys(errors).length !== 0;
+  };
+
+  const addCategoryHandler = () => {
+    setOpenPopover(true);
   };
 
   return (
@@ -59,7 +72,6 @@ export default function EditForm({ showform, values, submitHandler }) {
       >
         {(props) => (
           <Form onSubmit={props.handleSubmit}>
-            {console.log(props.initialValues)}
             <FormControl variant="floating" isRequired my="5">
               <Field
                 as={Input}
@@ -101,9 +113,32 @@ export default function EditForm({ showform, values, submitHandler }) {
             </FormControl>
             <FormControl variant="floating" isRequired my="5">
               <Field
+                as={Input}
+                name="code"
+                type="text"
+                onChange={props.handleChange}
+                focusBorderColor="green.500"
+                placeholder={props.values.codigo}
+                value={props.getFieldProps("code").value}
+              ></Field>
+              <FormLabel
+                htmlFor="code"
+                fontWeight="bold"
+                backgroundColor="white"
+                w="50%"
+              >
+                Codigo
+              </FormLabel>
+              <ErrorMessage name="code" component="div" color="red" />
+            </FormControl>
+            <FormControl variant="floating" isRequired my="5">
+              <Field
                 as={Select}
                 name="category"
                 focusBorderColor="green.500"
+                onChange={(e) =>
+                  e.target.value === "add" && addCategoryHandler()
+                }
                 placeholder={props.values.categoria}
                 value={props.getFieldProps("category").value}
               >
@@ -111,6 +146,7 @@ export default function EditForm({ showform, values, submitHandler }) {
                 <option value="categoria2">Categoria2</option>
                 <option value="categoria3">Categoria3</option>
                 <option value="categoria4">Categoria4</option>
+                <option value="add">Agregar Categoria</option>
               </Field>
               <FormLabel
                 htmlFor="category"
@@ -121,7 +157,7 @@ export default function EditForm({ showform, values, submitHandler }) {
               </FormLabel>
               <ErrorMessage name="category" component="div" color="red" />
             </FormControl>
-            <PopoverModal showPopover={true} />
+            <PopoverModal showPopover={openPopover} />
             <FormControl variant="floating" isRequired my="5">
               <Field
                 as={Input}
@@ -227,4 +263,5 @@ EditForm.propTypes = {
   submitHandler: PropTypes.func,
   values: PropTypes.object,
   initialValues: PropTypes.object,
+  getFieldProps: PropTypes.func,
 };

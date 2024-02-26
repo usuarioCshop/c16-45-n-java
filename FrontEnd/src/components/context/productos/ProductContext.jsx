@@ -1,9 +1,11 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
+import { PropTypes } from "prop-types";
 import { BASE_URL } from "@/utils/connectApi";
 
 export const ProductContext = createContext({
   products: [],
   product: {},
+  categories: [],
 });
 
 export default function ProductContextProvider({ children }) {
@@ -12,12 +14,14 @@ export default function ProductContextProvider({ children }) {
     product: {
       detalle: "",
       precio: "",
+      codigo: "",
       categoria: "",
       fechaAlta: "",
       cantidad: "",
       marca: "",
       imagenUrl: "",
     },
+    categories: [],
   });
 
   const addProducts = (newProduct) => {
@@ -30,14 +34,45 @@ export default function ProductContextProvider({ children }) {
     });
   };
 
-  const deleteProducts = (itemDeleted) => {
-    BASE_URL.delete(`eliminar/${itemDeleted.id}`);
+  const editProducts = (product, confirmation) => {
+    console.log(product);
+    console.log(confirmation);
+    // if (confirmation.current) {
+    //   setTimeout(() => {
+    //     BASE_URL.delete(`editar/${product.id}`);
+    //   }, 3000);
+    //   setProductManager((prev) => {
+    //     return {
+    //       ...prev,
+    //       products: prev.products.filter(
+    //         (product) => product.id === product.id
+    //       ),
+    //     };
+    //   });
+    // }
+  };
+
+  const deleteProducts = (itemDeleted, confirmation) => {
+    if (confirmation.current) {
+      setTimeout(() => {
+        BASE_URL.delete(`eliminar/${itemDeleted.id}`);
+      }, 3000);
+      setProductManager((prev) => {
+        return {
+          ...prev,
+          products: prev.products.filter(
+            (product) => product.id !== itemDeleted.id
+          ),
+        };
+      });
+    }
+  };
+
+  const addNewCategory = (newCategory) => {
+    BASE_URL.post("categoria", newCategory);
     setProductManager((prev) => {
       return {
-        ...prev,
-        products: prev.products.filter(
-          (product) => product.id !== itemDeleted.id
-        ),
+        categories: [...prev.categories, newCategory],
       };
     });
   };
@@ -55,12 +90,17 @@ export default function ProductContextProvider({ children }) {
       .catch((error) => console.log(error));
   }, []);
 
-  const productCtxt = {
-    products: productManager.products,
-    product: productManager.product,
-    addProducts,
-    deleteProducts,
-  };
+  const productCtxt = useMemo(() => {
+    return {
+      products: productManager.products,
+      product: productManager.product,
+      addProducts,
+      deleteProducts,
+      editProducts,
+      categories: productManager.categories,
+      addNewCategory,
+    };
+  }, [productManager]);
 
   return (
     <ProductContext.Provider value={productCtxt}>
@@ -68,3 +108,7 @@ export default function ProductContextProvider({ children }) {
     </ProductContext.Provider>
   );
 }
+
+ProductContextProvider.propTypes = {
+  children: PropTypes.element.isRequired,
+};
