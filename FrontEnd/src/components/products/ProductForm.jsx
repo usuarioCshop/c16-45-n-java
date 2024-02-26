@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { PropTypes } from "prop-types";
 import {
   Button,
@@ -13,11 +13,33 @@ import PopoverModal from "@/components/ui/PopoverModal";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ProductContext } from "@/components/context/productos/ProductContext";
+
 export default function ProductForm({ showform }) {
-  let { product, addProducts } = useContext(ProductContext);
+  let { product, addProducts, categories, addNewCategory } =
+    useContext(ProductContext);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [openPopover, setOpenPopover] = useState(false);
 
   const handlerButton = (errors) => {
     return Object.keys(errors).length !== 0;
+  };
+
+  const addCategoryHandler = (value) => {
+    if (value === "add") {
+      return setOpenPopover(true);
+    }
+    addNewCategory(value);
+  };
+
+  const handlerCategory = (event) => {
+    const chooseValue = event.target.value;
+    setSelectedCategory(chooseValue);
+    chooseValue === "add" && addCategoryHandler(chooseValue);
+  };
+
+  const closeHandler = () => {
+    setOpenPopover(false);
   };
 
   return (
@@ -34,6 +56,7 @@ export default function ProductForm({ showform }) {
         initialValues={{
           productName: "",
           price: 0.0,
+          code: "",
           category: "",
           date: "",
           quantity: 1,
@@ -45,6 +68,9 @@ export default function ProductForm({ showform }) {
           price: Yup.number()
             .required("Coloca un precio en formato 0.00")
             .round("floor"),
+          code: Yup.string().required(
+            "Ingresa un codigo para el producto formato: 0PRODUCTO01"
+          ),
           category: Yup.string().required(
             "Selecciona una opcion o crea una categoria nueva"
           ),
@@ -66,7 +92,8 @@ export default function ProductForm({ showform }) {
           product = {
             detalle: values.productName,
             precio: values.price,
-            categoria: values.category,
+            codigo: values.code,
+            categoria: selectedCategory,
             fechaAlta: values.date,
             cantidad: values.quantity,
             marca: values.brand,
@@ -118,15 +145,39 @@ export default function ProductForm({ showform }) {
             </FormControl>
             <FormControl variant="floating" isRequired my="5">
               <Field
+                as={Input}
+                type="text"
+                name="code"
+                focusBorderColor="green.500"
+                placeholder="PRODUCTO01"
+              ></Field>
+              <FormLabel
+                htmlFor="code"
+                fontWeight="bold"
+                backgroundColor="white"
+                w="50%"
+              >
+                Codigo
+              </FormLabel>
+              <ErrorMessage name="code" component="div" color="red" />
+            </FormControl>
+            <FormControl variant="floating" isRequired my="5">
+              <Field
                 as={Select}
                 placeholder="Selecciona una categoria"
                 name="category"
                 focusBorderColor="green.500"
+                onChange={handlerCategory}
+                value={selectedCategory}
               >
-                <option value="categoria1">Categoria1</option>
-                <option value="categoria2">Categoria2</option>
-                <option value="categoria3">Categoria3</option>
-                <option value="categoria4">Categoria4</option>
+                {categories?.map((category, index) => {
+                  return (
+                    <option value={category.nombre} key={index}>
+                      {category.nombre}
+                    </option>
+                  );
+                })}
+                <option value="add">Agregar Categoria</option>
               </Field>
               <FormLabel
                 htmlFor="category"
@@ -136,8 +187,8 @@ export default function ProductForm({ showform }) {
                 Categoria
               </FormLabel>
               <ErrorMessage name="category" component="div" color="red" />
+              <PopoverModal isOpen={openPopover} onClose={closeHandler} />
             </FormControl>
-            <PopoverModal showPopover={true} />
             <FormControl variant="floating" isRequired my="5">
               <Field
                 as={Input}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -9,15 +10,23 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
+import PopoverModal from "@/components/ui/PopoverModal";
 import ProductForm from "../products/ProductForm.jsx";
 export default function ModalWindow() {
+  const [openPopover, setOpenPopover] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const modalOpenPopover = () => {
+    setOpenPopover(true);
+  };
+  const closeModalOpenPopover = () => {
+    setOpenPopover(false);
+  };
   return (
     <>
       <Button
         backgroundColor={"green.200"}
         alignContent={"center"}
-        onClick={onOpen}
+        onClick={modalOpenPopover}
         mx="2"
         w="25%"
       >
@@ -33,6 +42,7 @@ export default function ModalWindow() {
         <AddIcon mx="2" />
         <p>Producto</p>
       </Button>
+      <PopoverModal isOpen={openPopover} onClose={closeModalOpenPopover} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
