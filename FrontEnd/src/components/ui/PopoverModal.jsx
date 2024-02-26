@@ -13,18 +13,26 @@ import {
   Button,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { CategoryContext } from "@/components/context/productos/CategoriesContext";
+import { ProductContext } from "@/components/context/productos/ProductContext";
 
 export default function PopoverModal({ isOpen, onClose }) {
   const newCategory = useRef(null);
-  const { addNewCategory } = useContext(CategoryContext);
+  const descriptionCategory = useRef(null);
+
+  let { category, addNewCategory } = useContext(ProductContext);
   const [error, setError] = useState(null);
 
   const saveCategory = () => {
-    if (newCategory.current) {
-      addNewCategory(newCategory.current.value);
+    if (newCategory.current && descriptionCategory.current) {
+      category = {
+        nombre: newCategory.current.value,
+        descripcion: descriptionCategory.current.value,
+      };
+      addNewCategory(category);
     } else {
-      setError({ message: "agregue una nueva categoria" });
+      setError({
+        message: "por favor, agregue una nueva categoria con una descripcion",
+      });
     }
     setTimeout(() => onClose(), 3000);
   };
@@ -50,6 +58,22 @@ export default function PopoverModal({ isOpen, onClose }) {
               backgroundColor="white"
             >
               Nueva Categoria
+            </FormLabel>
+          </FormControl>
+          {error && <FormErrorMessage value={error.message} />}
+          <FormControl variant="floating" my="5" size="sm">
+            <Input
+              type="text"
+              focusBorderColor="green.500"
+              placeholder="agregar una descripcion"
+              ref={descriptionCategory}
+            />
+            <FormLabel
+              htmlFor="productImage"
+              fontWeight="bold"
+              backgroundColor="white"
+            >
+              Descripcion Categoria
             </FormLabel>
           </FormControl>
           {error && <FormErrorMessage value={error.message} />}

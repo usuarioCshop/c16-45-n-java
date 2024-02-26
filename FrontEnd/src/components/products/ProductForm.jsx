@@ -13,11 +13,10 @@ import PopoverModal from "@/components/ui/PopoverModal";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ProductContext } from "@/components/context/productos/ProductContext";
-import { CategoryContext } from "../context/productos/CategoriesContext";
 
 export default function ProductForm({ showform }) {
-  let { product, addProducts } = useContext(ProductContext);
-  let { categories, addNewCategory } = useState(CategoryContext);
+  let { product, addProducts, categories, addNewCategory } =
+    useContext(ProductContext);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openPopover, setOpenPopover] = useState(false);
@@ -172,9 +171,11 @@ export default function ProductForm({ showform }) {
                 value={selectedCategory}
               >
                 {categories?.map((category, index) => {
-                  <option value={category} key={index}>
-                    {category}
-                  </option>;
+                  return (
+                    <option value={category.nombre} key={index}>
+                      {category.nombre}
+                    </option>
+                  );
                 })}
                 <option value="add">Agregar Categoria</option>
               </Field>

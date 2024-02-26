@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { PropTypes } from "prop-types";
 import {
   Button,
@@ -8,28 +8,42 @@ import {
   Input,
   ButtonGroup,
   Select,
+  Editable,
+  EditableInput,
 } from "@chakra-ui/react";
 import PopoverModal from "@/components/ui/PopoverModal";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { ProductContext } from "../context/productos/ProductContext";
 import { BASE_URL } from "@/utils/connectApi";
 
-export default function EditForm({ showform, values, submitHandler }) {
+export default function EditForm({ showform, product, submitHandler }) {
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [openPopover, setOpenPopover] = useState(false);
+  let { categories, addNewCategory } = useContext(ProductContext);
+
+  const addCategoryHandler = (value) => {
+    if (value === "add") {
+      return setOpenPopover(true);
+    }
+    addNewCategory(value);
+  };
+
+  const handlerCategory = (event) => {
+    const chooseValue = event.target.value;
+    setSelectedCategory(chooseValue);
+    chooseValue === "add" && addCategoryHandler(chooseValue);
+  };
+
+  const handlerButton = (errors) => {
+    return Object.keys(errors).length !== 0;
+  };
 
   useEffect(() => {
     BASE_URL.get("categorias")
       .then((response) => console.log(response.data))
       .catch((error) => console.log(error));
   });
-
-  const handlerButton = (errors) => {
-    return Object.keys(errors).length !== 0;
-  };
-
-  const addCategoryHandler = () => {
-    setOpenPopover(true);
-  };
 
   return (
     <Box
@@ -42,7 +56,7 @@ export default function EditForm({ showform, values, submitHandler }) {
       boxShadow="2xl"
     >
       <Formik
-        initialValues={values}
+        initialValues={product}
         validationSchema={Yup.object({
           detalle: Yup.string().required("Coloca el nombre del producto"),
           precio: Yup.number()
@@ -72,7 +86,11 @@ export default function EditForm({ showform, values, submitHandler }) {
       >
         {(props) => (
           <Form onSubmit={props.handleSubmit}>
+            {console.log(props.values)}
             <FormControl variant="floating" isRequired my="5">
+              <Editable defaultValue={props.values.detalle}>
+                <EditableInput />
+              </Editable>
               <Field
                 as={Input}
                 type="text"
@@ -134,18 +152,19 @@ export default function EditForm({ showform, values, submitHandler }) {
             <FormControl variant="floating" isRequired my="5">
               <Field
                 as={Select}
+                placeholder="Selecciona una categoria"
                 name="category"
                 focusBorderColor="green.500"
-                onChange={(e) =>
-                  e.target.value === "add" && addCategoryHandler()
-                }
-                placeholder={props.values.categoria}
-                value={props.getFieldProps("category").value}
+                onChange={handlerCategory}
+                value={selectedCategory}
               >
-                <option value="categoria1">Categoria1</option>
-                <option value="categoria2">Categoria2</option>
-                <option value="categoria3">Categoria3</option>
-                <option value="categoria4">Categoria4</option>
+                {categories?.map((category, index) => {
+                  return (
+                    <option value={category.nombre} key={index}>
+                      {category.nombre}
+                    </option>
+                  );
+                })}
                 <option value="add">Agregar Categoria</option>
               </Field>
               <FormLabel
@@ -262,6 +281,6 @@ EditForm.propTypes = {
   errors: PropTypes.func,
   submitHandler: PropTypes.func,
   values: PropTypes.object,
-  initialValues: PropTypes.object,
+  product: PropTypes.object,
   getFieldProps: PropTypes.func,
 };

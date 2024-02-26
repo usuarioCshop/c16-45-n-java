@@ -6,6 +6,7 @@ export const ProductContext = createContext({
   products: [],
   product: {},
   categories: [],
+  category: {},
 });
 
 export default function ProductContextProvider({ children }) {
@@ -22,6 +23,10 @@ export default function ProductContextProvider({ children }) {
       imagenUrl: "",
     },
     categories: [],
+    category: {
+      nombre: "",
+      descripcion: "",
+    },
   });
 
   const addProducts = (newProduct) => {
@@ -67,14 +72,19 @@ export default function ProductContextProvider({ children }) {
       });
     }
   };
-
+  // CATEGORIAS
   const addNewCategory = (newCategory) => {
-    BASE_URL.post("categoria", newCategory);
+    BASE_URL.post("categorias", newCategory);
     setProductManager((prev) => {
       return {
         categories: [...prev.categories, newCategory],
       };
     });
+  };
+
+  const editCategories = (category, confirmation) => {
+    console.log(category);
+    console.log(confirmation);
   };
 
   useEffect(() => {
@@ -90,15 +100,30 @@ export default function ProductContextProvider({ children }) {
       .catch((error) => console.log(error));
   }, []);
 
+  useEffect(() => {
+    BASE_URL.get("categorias")
+      .then((response) => {
+        setProductManager((prev) => {
+          return {
+            ...prev,
+            categories: response.data,
+          };
+        });
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const productCtxt = useMemo(() => {
     return {
       products: productManager.products,
       product: productManager.product,
+      categories: productManager.categories,
+      category: productManager.category,
       addProducts,
       deleteProducts,
       editProducts,
-      categories: productManager.categories,
       addNewCategory,
+      editCategories,
     };
   }, [productManager]);
 
