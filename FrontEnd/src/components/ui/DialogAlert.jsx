@@ -1,4 +1,5 @@
 import { useRef, useContext } from "react";
+import { PropTypes } from "prop-types";
 import { ProductContext } from "@/components/context/productos/ProductContext";
 
 import {
@@ -14,15 +15,9 @@ import {
 
 export default function DialogAlert({ isOpen, onClose, product }) {
   const cancelRef = useRef();
-  const { deleteProducts } = useContext(ProductContext);
+  const approveRef = useRef();
 
-  const delProducts = (prod) => {
-    console.log(prod);
-    setTimeout(() => {
-      deleteProducts(prod);
-      onClose();
-    }, 2000);
-  };
+  const { deleteProducts } = useContext(ProductContext);
 
   return (
     <AlertDialog
@@ -44,7 +39,14 @@ export default function DialogAlert({ isOpen, onClose, product }) {
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="red" onClick={delProducts(product)} ml={3}>
+            <Button
+              colorScheme="red"
+              ref={approveRef}
+              onClick={() =>
+                deleteProducts(product, approveRef) ? onClose() : null
+              }
+              ml={3}
+            >
               Delete
             </Button>
             <AlertDialogCloseButton />
@@ -54,3 +56,9 @@ export default function DialogAlert({ isOpen, onClose, product }) {
     </AlertDialog>
   );
 }
+
+DialogAlert.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  product: PropTypes.object,
+};

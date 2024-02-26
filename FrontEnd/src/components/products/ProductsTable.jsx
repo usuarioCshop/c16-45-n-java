@@ -18,7 +18,7 @@ import DialogAlert from "../ui/DialogAlert";
 
 export default function ProductsTable() {
   //Products List
-  const { products } = useContext(ProductContext);
+  const { products, editProducts } = useContext(ProductContext);
 
   // Delete Product
   const [alertModal, setAlertModal] = useState(false);
@@ -55,13 +55,6 @@ export default function ProductsTable() {
 
   const closeEditModal = () => {
     setEditModalOpen(false);
-  };
-
-  const handlerSubmit = (editedProduct) => {
-    // BASE_URL.put(`editar/${product.id}`, getProduct).then((response) =>
-    //   console.log(response.data)
-    // );
-    console.log(editedProduct);
   };
 
   return (
@@ -115,7 +108,7 @@ export default function ProductsTable() {
         isOpen={editModalOpen}
         onClose={closeEditModal}
         initialValues={selectedProduct}
-        onSubmit={handlerSubmit}
+        onSubmit={editProducts}
       />
       <DialogAlert
         isOpen={alertModal}
