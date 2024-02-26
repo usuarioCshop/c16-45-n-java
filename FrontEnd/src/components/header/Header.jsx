@@ -1,19 +1,22 @@
-import {
-  FormControl,
-  Input,
-  InputGroup,
-  InputRightElement,
-  IconButton,
-  Heading,
-  Box,
-  Flex,
-  Icon,
-} from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { useState } from "react";
+import { IconButton, Heading, Box, Flex, Icon } from "@chakra-ui/react";
+import Searchbar from "./Searchbar";
 import ModalWindow from "@/components/ui/ModalWindow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { BASE_URL } from "@/utils/connectApi";
+
 export default function Header() {
+  const [findProduct, setFindProduct] = useState(null);
+
+  const searchHandler = (searchValue) => {
+    BASE_URL.get("listar")
+      .then((response) => response.data)
+      .then((data) => {
+        setFindProduct(data.find((product) => product.detalle === searchValue));
+      });
+  };
+
   return (
     <Flex
       justifyContent="space-evenly"
@@ -25,17 +28,7 @@ export default function Header() {
         Productos
       </Heading>
       <Box display="flex" w="80%" p="2">
-        <FormControl mx="2">
-          <InputGroup>
-            <Input type="search" placeholder="buscar producto" bg="white" />
-            <InputRightElement>
-              <IconButton
-                aria-label="searchbar"
-                icon={<SearchIcon />}
-              ></IconButton>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
+        <Searchbar onSearch={searchHandler} />
         <IconButton>
           <Icon alignSelf="center">
             <FontAwesomeIcon icon={faFilter} size="xl" />
@@ -43,6 +36,7 @@ export default function Header() {
         </IconButton>
         <ModalWindow />
       </Box>
+      <p>{findProduct}</p>
     </Flex>
   );
 }
