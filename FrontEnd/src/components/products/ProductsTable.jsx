@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useState } from "react";
 import {
   TableContainer,
   Table,
@@ -12,21 +11,52 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-const URL_BASE = "http://localhost:8080/"
-export default function ProductsTable() {
-  const [products, setProducts] = useState([]);
+//const URL_BASE = "http://localhost:8080/"
 
-  const deleteProduct = (id) => {
-    products.filter((product) => product.id - 1 !== id);
+import { ProductContext } from "@/components/context/productos/ProductContext";
+import EditModal from "@/components/ui/EditModal";
+import DialogAlert from "../ui/DialogAlert";
+
+export default function ProductsTable() {
+  //Products List
+  const { products, editProducts } = useContext(ProductContext);
+  
+  // Delete Product
+  const [alertModal, setAlertModal] = useState(false);
+  const [choosedProduct, setChoosedProduct] = useState(null);
+
+  const openAlertModal = (product) => {
+    setChoosedProduct(product);
+    setAlertModal(true);
   };
 
-  useEffect(() => {
-    axios
-      .get(URL_BASE+"api/listar")
-      .then((response) => response.data)
-      .then((data) => setProducts(data))
-      .catch((error) => console.log(error.message));
-  }, []);
+  const closeAlertModal = () => {
+    setAlertModal(false);
+  };
+
+  const deleteProduct = (row) => {
+    const deleteProduct = products.find((_, index) => index === row);
+    openAlertModal(deleteProduct);
+  };
+
+  const editProduct = (row) => {
+    //identificando elemento
+    const productToEdit = products.find((_, idx) => idx === row);
+    openEditModal(productToEdit);
+  };
+
+  // EditModal state
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const openEditModal = (product) => {
+    setSelectedProduct(product);
+    setEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setEditModalOpen(false);
+  };
 
   return (
     <>
@@ -45,7 +75,7 @@ export default function ProductsTable() {
           </Thead>
           <Tbody>
             {products.map((product, index) => (
-              <Tr key={index}>
+              <Tr key={product.id}>
                 <Td>{product.imagenUrl}</Td>
                 <Td>{product.detalle}</Td>
                 <Td>{product.codigo}</Td>
@@ -54,7 +84,11 @@ export default function ProductsTable() {
                 <Td>{product.cantidad}</Td>
                 <Td>
                   <ButtonGroup gap={"4"}>
-                    <Button m={5} size={"xs"}>
+                    <Button
+                      m={5}
+                      size={"xs"}
+                      onClick={() => editProduct(index)}
+                    >
                       <EditIcon />
                     </Button>
                     <Button
@@ -71,6 +105,17 @@ export default function ProductsTable() {
           </Tbody>
         </Table>
       </TableContainer>
+      <EditModal
+        isOpen={editModalOpen}
+        onClose={closeEditModal}
+        initialValues={selectedProduct}
+        onSubmit={editProducts}
+      />
+      <DialogAlert
+        isOpen={alertModal}
+        onClose={closeAlertModal}
+        product={choosedProduct}
+      />
     </>
   );
 }
