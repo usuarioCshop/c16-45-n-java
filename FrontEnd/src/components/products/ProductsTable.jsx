@@ -10,7 +10,7 @@ import {
   Button,
   ButtonGroup,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ChevronUpIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 import { ProductContext } from "@/components/context/productos/ProductContext";
 import EditModal from "@/components/ui/EditModal";
@@ -68,7 +68,11 @@ export default function ProductsTable() {
               <Th>código</Th>
               <Th>categoria</Th>
               <Th>precio</Th>
-              <Th>cantidad</Th>
+              <Th>
+                categoria
+                <ChevronDownIcon />
+                <ChevronUpIcon />
+              </Th>
               <Th>acciones</Th>
             </Tr>
           </Thead>
