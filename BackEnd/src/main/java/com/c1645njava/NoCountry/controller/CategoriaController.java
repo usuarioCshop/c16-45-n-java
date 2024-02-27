@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/categorias")
 @CrossOrigin(origins="${URL_API}")
 public class CategoriaController {
 
@@ -19,14 +19,14 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     // Endpoint para crear una nueva categoría
-    @PostMapping("/categorias")
+    @PostMapping
     public ResponseEntity<Categoria> crearCategoria(@RequestBody Categoria categoria) {
         Categoria nuevaCategoria = categoriaService.crearCategoria(categoria);
         return new ResponseEntity<>(nuevaCategoria, HttpStatus.CREATED);
     }
 
     // Endpoint para obtener todas las categorías
-    @GetMapping("/categorias")
+    @GetMapping
     public ResponseEntity<List<Categoria>> obtenerTodasCategorias() {
         List<Categoria> categorias = categoriaService.obtenerTodasCategorias();
         return new ResponseEntity<>(categorias, HttpStatus.OK);
