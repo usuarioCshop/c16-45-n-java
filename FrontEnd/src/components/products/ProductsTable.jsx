@@ -12,12 +12,17 @@ import {
   IconButton,
   Img,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  DeleteIcon,
+  EditIcon,
+} from "@chakra-ui/icons";
 
 import { ProductContext } from "@/components/context/productos/ProductContext";
 import EditModal from "@/components/ui/EditModal";
-import DialogAlert from "../ui/DialogAlert";
-import ordenar from "../../utils/ordenamiento";
+import DialogAlert from "@/components/ui/DialogAlert";
+import ordenar from "@/utils/ordenamiento";
 
 export default function ProductsTable() {
   //Products List
@@ -59,11 +64,10 @@ export default function ProductsTable() {
   const closeEditModal = () => {
     setEditModalOpen(false);
   };
-  const [cat,setCat]=useState(false)
-  
-  function handlerCat(e,tipo){
-     setCat(ordenar(cat,products,tipo))
-  
+  const [cat, setCat] = useState(false);
+
+  function handlerCat(e, tipo) {
+    setCat(ordenar(cat, products, tipo));
   }
   return (
     <>
@@ -71,76 +75,83 @@ export default function ProductsTable() {
         <Table variant={"striped"} colorScheme="telegram">
           <Thead>
             <Tr>
-              <Th color="black" fontWeight="900">imagen</Th>
+              <Th color="black" fontWeight="900">
+                imagen
+              </Th>
               <Th color="lightPurple">
                 Detalle
-                <IconButton 
-                variant="outline" 
-                bgColor="transparent" 
-                border="none"
-                size="sm" 
-                color="black"
-                fontWeight="900"
-                _hover={{bgColor:"AlmosWhitePurple"}}
-                onClick = {(e)=>handlerCat(e,1)}>
-                {cat?<ChevronDownIcon/>: <ChevronUpIcon />}                
+                <IconButton
+                  variant="outline"
+                  bgColor="transparent"
+                  border="none"
+                  size="sm"
+                  color="black"
+                  fontWeight="900"
+                  _hover={{ bgColor: "AlmosWhitePurple" }}
+                  onClick={(e) => handlerCat(e, 1)}
+                >
+                  {cat ? <ChevronDownIcon /> : <ChevronUpIcon />}
                 </IconButton>
-              
               </Th>
-              <Th color="black" fontWeight="900">Código</Th>
+              <Th color="black" fontWeight="900">
+                Código
+              </Th>
               <Th color="lightPurple">
                 Categoria
-                <IconButton 
-                variant="outline" 
-                bgColor="transparent" 
-                border="none"
-                size="sm" 
-                color="black"
-                fontWeight="900"
-                _hover={{bgColor:"AlmosWhitePurple"}}
-                onClick = {(e)=>handlerCat(e,2)}>
-                {cat?<ChevronDownIcon/>: <ChevronUpIcon />}                
+                <IconButton
+                  variant="outline"
+                  bgColor="transparent"
+                  border="none"
+                  size="sm"
+                  color="black"
+                  fontWeight="900"
+                  _hover={{ bgColor: "AlmosWhitePurple" }}
+                  onClick={(e) => handlerCat(e, 2)}
+                >
+                  {cat ? <ChevronDownIcon /> : <ChevronUpIcon />}
                 </IconButton>
-              
               </Th>
               <Th color="lightPurple">
                 Precio
-                <IconButton                 
-                variant="outline" 
-                bgColor="transparent" 
-                border="none"
-                size="sm" 
-                color="black"
-                fontWeight="900"
-                _hover={{bgColor:"AlmosWhitePurple"}}
-                onClick = {(e)=>handlerCat(e,3)}>
-                {cat?<ChevronDownIcon/>: <ChevronUpIcon />}                
+                <IconButton
+                  variant="outline"
+                  bgColor="transparent"
+                  border="none"
+                  size="sm"
+                  color="black"
+                  fontWeight="900"
+                  _hover={{ bgColor: "AlmosWhitePurple" }}
+                  onClick={(e) => handlerCat(e, 3)}
+                >
+                  {cat ? <ChevronDownIcon /> : <ChevronUpIcon />}
                 </IconButton>
-              
               </Th>
               <Th color="lightPurple">
                 Cantidad
-                <IconButton 
-                variant="outline" 
-                bgColor="transparent" 
-                border="none"
-                size="sm" 
-                color="black"
-                fontWeight="900"
-                _hover={{bgColor:"AlmosWhitePurple"}}
-                onClick = {(e)=>handlerCat(e,4)}>
-                {cat?<ChevronDownIcon/>: <ChevronUpIcon />}                
+                <IconButton
+                  variant="outline"
+                  bgColor="transparent"
+                  border="none"
+                  size="sm"
+                  color="black"
+                  fontWeight="900"
+                  _hover={{ bgColor: "AlmosWhitePurple" }}
+                  onClick={(e) => handlerCat(e, 4)}
+                >
+                  {cat ? <ChevronDownIcon /> : <ChevronUpIcon />}
                 </IconButton>
-              
               </Th>
-              <Th color="black" fontWeight="900">acciones</Th>
+              <Th color="black" fontWeight="900">
+                acciones
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
             {products.map((product, index) => (
               <Tr key={product.id}>
                 <Td>
-                  <Img src={product.imagenUrl} width="100px"/></Td>
+                  <Img src={product.imagenUrl} width="100px" />
+                </Td>
                 <Td>{product.detalle}</Td>
                 <Td>{product.codigo}</Td>
                 <Td>{product.categoria}</Td>
