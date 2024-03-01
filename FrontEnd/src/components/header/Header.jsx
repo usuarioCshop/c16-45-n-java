@@ -1,11 +1,8 @@
-import { useState } from "react";
 import { IconButton, Heading, Box, Flex, Icon } from "@chakra-ui/react";
 import Searchbar from "./Searchbar";
 import ModalWindow from "@/components/ui/ModalWindow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { BASE_URL } from "@/utils/connectApi";
-
 export default function Header() {
   
 
@@ -16,7 +13,7 @@ export default function Header() {
       position="relative"
       top="7rem"
     >
-      <Heading as="h3" size="2xl">
+      <Heading as="h3" size="2xl"color="darkBlue">
         Productos
       </Heading>
       <Box display="flex" w="80%" p="2">

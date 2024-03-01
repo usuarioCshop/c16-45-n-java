@@ -11,9 +11,11 @@ import {
   ButtonGroup,
   IconButton,
   Img,
+  
+
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
-
+import '../../assets/products.css';
 import { ProductContext } from "@/components/context/productos/ProductContext";
 import EditModal from "@/components/ui/EditModal";
 import DialogAlert from "../ui/DialogAlert";
@@ -67,11 +69,15 @@ export default function ProductsTable() {
   }
   return (
     <>
-      <TableContainer p="2.5" position="relative" top="8rem" maxW="100%">
-        <Table variant={"striped"} colorScheme="telegram">
-          <Thead>
+    
+      <TableContainer p="2.5" position="relative" top="8rem" maxW="100%" >
+        <Table variant={"striped"} colorScheme="telegram" >
+          <Thead  >
             <Tr>
-              <Th color="black" fontWeight="900">imagen</Th>
+              <Th 
+              color="black" 
+              fontWeight="900"
+              >imagen</Th>
               <Th color="lightPurple">
                 Detalle
                 <IconButton 
@@ -150,14 +156,16 @@ export default function ProductsTable() {
                   <ButtonGroup gap={"4"}>
                     <Button
                       m={5}
-                      size={"xs"}
+                      color="lightPurple"
+                      size={"xl"}
                       onClick={() => editProduct(index)}
                     >
                       <EditIcon />
                     </Button>
                     <Button
                       m={5}
-                      size={"xs"}
+                      color="lightPurple"
+                      size={"xl"}
                       onClick={() => deleteProduct(index)}
                     >
                       <DeleteIcon />
@@ -180,6 +188,8 @@ export default function ProductsTable() {
         onClose={closeAlertModal}
         product={choosedProduct}
       />
+
+  
     </>
   );
 }
