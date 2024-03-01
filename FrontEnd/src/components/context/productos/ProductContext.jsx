@@ -113,7 +113,7 @@ export default function ProductContextProvider({ children }) {
         });
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [productManager]);
 
   const productCtxt = useMemo(() => {
     return {
