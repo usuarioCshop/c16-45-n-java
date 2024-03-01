@@ -33,7 +33,7 @@ export default function Navbar() {
       justifyContent="space-between"
       alignItems="center"
       p="5"
-      position="absolute"
+     
       top="0"
       left="0"
     >

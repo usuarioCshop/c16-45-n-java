@@ -25,10 +25,11 @@ export default function ModalWindow() {
     <>
       <Button
         backgroundColor={"lightPurple"}
-        alignContent={"center"}
+        alignContent="center"
+       
         onClick={modalOpenPopover}
         mx="2"
-        w="25%"
+        minW="35%"
       >
         <AddIcon mx="2" />
         <p>Categoria</p>
@@ -37,7 +38,7 @@ export default function ModalWindow() {
         backgroundColor={"lightPurple"}
         alignContent={"center"}
         onClick={onOpen}
-        w="25%"
+        minW="35%"
       >
         <AddIcon mx="2" />
         <p>Producto</p>

@@ -18,7 +18,7 @@ export default function Searchbar() {
   };
 
   return (
-    <Flex w="60%">
+    <Flex minW="70%">
       <FormControl mx="2">
         <InputGroup size="md">
           <Input
