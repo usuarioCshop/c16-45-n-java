@@ -37,7 +37,7 @@ import ordenar from "@/utils/ordenamiento";
 export default function ProductsTable() {
   //Products List
   const { products, editProducts } = useContext(ProductContext);
-
+  
   // Delete Product
   const [alertModal, setAlertModal] = useState(false);
   const [choosedProduct, setChoosedProduct] = useState(null);
