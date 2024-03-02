@@ -37,6 +37,10 @@ public class Producto {
 
     private String nombreProveedor;
 
+    //Agregado codigo como atributo. 26/2
+    //Duda si es alfanumerico o numerico el codigo.
+    private String codigoBarra;
+
     @Column(nullable = false)
     private Boolean activo = true;
 

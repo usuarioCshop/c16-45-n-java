@@ -7,8 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin(origins="${URL_API}")
-//@CrossOrigin(origins="https://c16-45-n-java-production.up.railway.app/")
+
 @RestController
 @RequestMapping("/api")
 
@@ -57,22 +58,28 @@ public class ProductoController {
     }
 
     // Editar un producto existente - OK
+    //Modificacion - agregue atributos faltantes 26/2
     @PutMapping("/editar/{id}")
-    public ResponseEntity<Producto> editarProducto(@PathVariable Long id, @RequestBody Producto producto)
-    {
+    public ResponseEntity<Producto> editarProducto(@PathVariable Long id, @RequestBody Producto producto) {
         Producto productoExistente = productoService.mostrarPorId(id);
         if (productoExistente != null) {
             productoExistente.setDetalle(producto.getDetalle());
             productoExistente.setPrecio(producto.getPrecio());
             productoExistente.setFechaAlta(producto.getFechaAlta());
+            productoExistente.setCantidad(producto.getCantidad());
+            productoExistente.setCategoria(producto.getCategoria());
+            productoExistente.setMarca(producto.getMarca());
+            productoExistente.setNombreProveedor(producto.getNombreProveedor());
+            productoExistente.setCodigoBarra(producto.getCodigoBarra());
+            productoExistente.setActivo(producto.getActivo());
+            productoExistente.setImagenUrl(producto.getImagenUrl());
             productoService.editarProducto(productoExistente);
             return ResponseEntity.ok().body(productoExistente);
-        }
-        else
-        {
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     //Eliminar producto - OK
     @DeleteMapping("/eliminar/{id}")
