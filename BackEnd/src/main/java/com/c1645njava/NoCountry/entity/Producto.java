@@ -31,14 +31,14 @@ public class Producto {
     @Column(nullable = false)
     private int cantidad;
 
-    //Agregado Categoria como atributo. 26/2
+    //Agregado Categoria como atributo.
     private String categoria;
 
     private String marca;
 
     private String nombreProveedor;
 
-    //Agregado codigo como atributo. 26/2
+    //Agregado codigo como atributo.
     //Duda si es alfanumerico o numerico el codigo.
     private String codigoBarra;
 
