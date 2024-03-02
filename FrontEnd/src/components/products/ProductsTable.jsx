@@ -31,8 +31,8 @@ import {
 import "../../assets/products.css";
 import { ProductContext } from "@/components/context/productos/ProductContext";
 import EditModal from "@/components/ui/EditModal";
-import DialogAlert from "../ui/DialogAlert";
-import ordenar from "../../utils/ordenamiento";
+import DialogAlert from "@/components/ui/DialogAlert";
+import ordenar from "@/utils/ordenamiento";
 
 export default function ProductsTable() {
   //Products List
@@ -89,15 +89,13 @@ export default function ProductsTable() {
             <Card minW="sm" key={product.id}>
               <CardBody>
                 <Image
-                  src={product.imagenUrl} 
+                  src={product.imagenUrl}
                   alt="Green double couch with wooden legs"
                   borderRadius="lg"
                 />
                 <Stack mt="6" spacing="3">
                   <Heading size="md">{product.detalle}</Heading>
-                  <Text>
-                  {product.categoria}
-                  </Text>
+                  <Text>{product.categoria}</Text>
                   <Text color="blue.600" fontSize="2xl">
                     $ {product.precio}
                   </Text>
@@ -109,9 +107,7 @@ export default function ProductsTable() {
                   <Button variant="solid" colorScheme="blue">
                     Buy now
                   </Button>
-                  <Text>
-                   Stock {product.cantidad}
-                  </Text>
+                  <Text>Stock {product.cantidad}</Text>
                   <Button variant="ghost" colorScheme="blue">
                     Add to cart
                   </Button>

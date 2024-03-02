@@ -30,19 +30,19 @@ export default function ProductContextProvider({ children }) {
   });
 
   const onFind = (producto) => {
-    if(producto!==''){
-
+    if (producto !== "") {
       setProductManager((prev) => {
         return {
           ...prev,
-          products: prev.products.filter((pro) =>pro.detalle.toLowerCase().includes(producto.toLowerCase()))
+          products: prev.products.filter((pro) =>
+            pro.detalle.toLowerCase().includes(producto.toLowerCase())
+          ),
         };
-      })
-    }else{
-      listProducts()
-     
+      });
+    } else {
+      listProducts();
     }
-    };
+  };
 
   const addProducts = (newProduct) => {
     BASE_URL.post("nuevo", newProduct);
@@ -57,19 +57,6 @@ export default function ProductContextProvider({ children }) {
   const editProducts = (product, confirmation) => {
     console.log(product);
     console.log(confirmation);
-    // if (confirmation.current) {
-    //   setTimeout(() => {
-    //     BASE_URL.delete(`editar/${product.id}`);
-    //   }, 3000);
-    //   setProductManager((prev) => {
-    //     return {
-    //       ...prev,
-    //       products: prev.products.filter(
-    //         (product) => product.id === product.id
-    //       ),
-    //     };
-    //   });
-    // }
   };
 
   const deleteProducts = (itemDeleted, confirmation) => {
@@ -101,24 +88,21 @@ export default function ProductContextProvider({ children }) {
     console.log(category);
     console.log(confirmation);
   };
-  const listProducts=()=>{
+  const listProducts = () => {
     BASE_URL.get("listar")
-    .then((response) => {
-      setProductManager((prev) => {
-        return {
-          ...prev,
-          products: response.data,
-        };
-      });
-    })
-    .catch((error) => console.log(error));
-  }
+      .then((response) => {
+        setProductManager((prev) => {
+          return {
+            ...prev,
+            products: response.data,
+          };
+        });
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
-    listProducts()
-  }, []);
-
-  useEffect(() => {
+    listProducts();
     BASE_URL.get("categorias")
       .then((response) => {
         setProductManager((prev) => {
@@ -129,7 +113,7 @@ export default function ProductContextProvider({ children }) {
         });
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [productManager]);
 
   const productCtxt = useMemo(() => {
     return {
