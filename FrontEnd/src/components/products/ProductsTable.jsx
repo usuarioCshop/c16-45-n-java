@@ -86,11 +86,11 @@ export default function ProductsTable() {
       {isMobile ? (
         <Box>
           {products?.map((product) => (
-            <Card minW="sm" key={product.id}>
+            <Card key={product.id}>
               <CardBody>
                 <Image
                   src={product.imagenUrl}
-                  alt="Green double couch with wooden legs"
+                  alt="articulos de libreria"
                   borderRadius="lg"
                 />
                 <Stack mt="6" spacing="3">
