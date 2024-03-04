@@ -14,6 +14,7 @@ import PopoverModal from "@/components/ui/PopoverModal";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ProductContext } from "@/components/context/productos/ProductContext";
+import { BASE_URL } from "@/utils/connectApi";
 
 export default function ProductForm({ showform }) {
   let { product, addProducts, categories, addNewCategory, listCategories } =
@@ -29,7 +30,6 @@ export default function ProductForm({ showform }) {
   };
 
   const addCategoryHandler = (value) => {
-    console.log(value);
     if (value === "add") {
       return setOpenPopover(true);
     }
@@ -37,7 +37,6 @@ export default function ProductForm({ showform }) {
   };
 
   const handlerCategory = (event) => {
-    console.log(event.target.value);
     const chooseValue = event.target.value;
     setSelectedCategory(chooseValue);
     chooseValue === "add" && addCategoryHandler(chooseValue);
@@ -106,6 +105,7 @@ export default function ProductForm({ showform }) {
           };
           setTimeout(() => {
             addProducts(product);
+            BASE_URL.post("nuevo", product);
             showform();
           }, 3000);
         }}
