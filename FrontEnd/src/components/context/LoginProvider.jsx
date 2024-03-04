@@ -16,6 +16,10 @@ return (
     </LoginContext.Provider>
   );
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/dev-pollo
 LoginProvider.propTypes = {
   children: PropTypes.element.isRequired,
 };

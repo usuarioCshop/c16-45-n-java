@@ -199,7 +199,7 @@ export default function ProductsTable() {
                     <Img src={product.imagenUrl} width="100px" />
                   </Td>
                   <Td>{product.detalle}</Td>
-                  <Td>{product.codigo}</Td>
+                  <Td>{product.codigoBarra}</Td>
                   <Td>{product.categoria}</Td>
                   <Td>$ {product.precio}</Td>
                   <Td>{product.cantidad}</Td>

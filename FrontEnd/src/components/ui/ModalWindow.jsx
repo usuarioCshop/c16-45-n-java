@@ -8,6 +8,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   Button,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import PopoverModal from "@/components/ui/PopoverModal";
@@ -23,27 +24,28 @@ export default function ModalWindow() {
   };
   return (
     <>
-      <Button
-        backgroundColor={"lightPurple"}
-        alignContent="center"
-       
-        onClick={modalOpenPopover}
-        mx="2"
-        minW="35%"
-      >
-        <AddIcon mx="2" />
-        <p>Categoria</p>
-      </Button>
-      <Button
-        backgroundColor={"lightPurple"}
-        alignContent={"center"}
-        onClick={onOpen}
-        minW="35%"
-      >
-        <AddIcon mx="2" />
-        <p>Producto</p>
-      </Button>
-      <PopoverModal isOpen={openPopover} onClose={closeModalOpenPopover} />
+      <ButtonGroup>
+        <Button
+          backgroundColor={"lightPurple"}
+          alignContent="center"
+          onClick={modalOpenPopover}
+          mx="2"
+          minW="35%"
+        >
+          <AddIcon mx="2" />
+          <p>Categoria</p>
+          <PopoverModal isOpen={openPopover} onClose={closeModalOpenPopover} />
+        </Button>
+        <Button
+          backgroundColor={"lightPurple"}
+          alignContent={"center"}
+          onClick={onOpen}
+          minW="35%"
+        >
+          <AddIcon mx="2" />
+          <p>Producto</p>
+        </Button>
+      </ButtonGroup>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
