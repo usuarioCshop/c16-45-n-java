@@ -29,6 +29,7 @@ export default function EditForm({ values, onClose }) {
       categoria: Yup.string().required(
         "Selecciona una opcion o crea una categoria nueva"
       ),
+      codigoBarra: Yup.string().required("Agrega un codigo para el producto"),
       fechaAlta: Yup.date()
         .default(() => Date.now())
         .required("Elige o coloca una fecha"),
@@ -117,7 +118,7 @@ export default function EditForm({ values, onClose }) {
                 type="text"
                 focusBorderColor="green.500"
                 onChange={(e) => handlerFields("codigo", e.target.value)}
-                value={formik.values.codigo}
+                value={formik.values.codigoBarra}
               ></Field>
               <FormLabel
                 htmlFor="code"

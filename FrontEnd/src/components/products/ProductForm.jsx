@@ -96,7 +96,7 @@ export default function ProductForm({ showform }) {
           product = {
             detalle: values.productName,
             precio: values.price,
-            codigo: values.code,
+            codigoBarra: values.code,
             categoria: values.category,
             fechaAlta: values.date,
             cantidad: values.quantity,

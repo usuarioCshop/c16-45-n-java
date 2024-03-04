@@ -8,7 +8,7 @@ const initialState = {
   product: {
     detalle: "",
     precio: "",
-    codigo: "",
+    codigoBarra: "",
     categoria: "",
     fechaAlta: "",
     cantidad: "",
