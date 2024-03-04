@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { LoginContext } from "./LoginContext";
+import { PropTypes } from "prop-types";
 
 export const LoginProvider = ({ children }) => {
  
@@ -14,4 +15,7 @@ return (
       {children}
     </LoginContext.Provider>
   );
+};
+LoginProvider.propTypes = {
+  children: PropTypes.element.isRequired,
 };
