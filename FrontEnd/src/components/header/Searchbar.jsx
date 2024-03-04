@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import { PropTypes } from "prop-types";
+import { useContext } from "react";
 import {
   Flex,
   FormControl,
@@ -12,9 +11,9 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { ProductContext } from "../context/productos/ProductContext";
 
 export default function Searchbar() {
-  let {onFind} = useContext(ProductContext)
-  const buscar = (e) => {
-     onFind(e.target.value);
+  const { onFind } = useContext(ProductContext);
+  const searchHandler = (value) => {
+    onFind(value);
   };
 
   return (
@@ -25,13 +24,13 @@ export default function Searchbar() {
             type="search"
             bg="white"
             placeholder="buscar producto"
-            onChange={(e) => buscar(e)}
+            onChange={(e) => searchHandler(e.target.value)}
           />
           <InputRightElement>
             <IconButton
               aria-label="searchbar"
               icon={<SearchIcon />}
-              // onClick={searchingProduct}
+              //onClick={(e)=>onFind(e.target.value)}
             ></IconButton>
           </InputRightElement>
         </InputGroup>
@@ -39,7 +38,3 @@ export default function Searchbar() {
     </Flex>
   );
 }
-
-Searchbar.propTypes = {
-  onSearch: PropTypes.func,
-};

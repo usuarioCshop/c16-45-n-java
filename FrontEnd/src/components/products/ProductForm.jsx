@@ -16,17 +16,20 @@ import * as Yup from "yup";
 import { ProductContext } from "@/components/context/productos/ProductContext";
 
 export default function ProductForm({ showform }) {
-  let { product, addProducts, categories, addNewCategory } =
+  let { product, addProducts, categories, addNewCategory, listCategories } =
     useContext(ProductContext);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openPopover, setOpenPopover] = useState(false);
+
+  listCategories();
 
   const handlerButton = (errors) => {
     return Object.keys(errors).length !== 0;
   };
 
   const addCategoryHandler = (value) => {
+    console.log(value);
     if (value === "add") {
       return setOpenPopover(true);
     }
@@ -34,6 +37,7 @@ export default function ProductForm({ showform }) {
   };
 
   const handlerCategory = (event) => {
+    console.log(event.target.value);
     const chooseValue = event.target.value;
     setSelectedCategory(chooseValue);
     chooseValue === "add" && addCategoryHandler(chooseValue);
@@ -94,7 +98,7 @@ export default function ProductForm({ showform }) {
             detalle: values.productName,
             precio: values.price,
             codigo: values.code,
-            categoria: selectedCategory,
+            categoria: values.category,
             fechaAlta: values.date,
             cantidad: values.quantity,
             marca: values.brand,
@@ -169,11 +173,11 @@ export default function ProductForm({ showform }) {
                 name="category"
                 focusBorderColor="green.500"
                 onChange={handlerCategory}
-                value={selectedCategory}
+                value={(props.values.category = selectedCategory)}
               >
-                {categories?.map((category, index) => {
+                {categories?.map((category) => {
                   return (
-                    <option value={category.nombre} key={index}>
+                    <option value={category.nombre} key={category.nombre}>
                       {category.nombre}
                     </option>
                   );
@@ -267,6 +271,7 @@ export default function ProductForm({ showform }) {
                 colorScheme="teal"
                 type="submit"
                 isDisabled={handlerButton(props.errors)}
+                isLoading={props.isSubmitting}
               >
                 Confirmar
               </Button>
@@ -286,4 +291,6 @@ ProductForm.propTypes = {
   handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   errors: PropTypes.func,
+  values: PropTypes.func,
+  isSubmitting: PropTypes.func,
 };
