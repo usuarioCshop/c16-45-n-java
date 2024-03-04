@@ -28,7 +28,6 @@ import {
   DeleteIcon,
   EditIcon,
 } from "@chakra-ui/icons";
-import "../../assets/products.css";
 import { ProductContext } from "@/components/context/productos/ProductContext";
 import EditModal from "@/components/ui/EditModal";
 import DialogAlert from "@/components/ui/DialogAlert";
@@ -36,14 +35,12 @@ import ordenar from "@/utils/ordenamiento";
 
 export default function ProductsTable() {
   //Products List
-  const { products, editProducts } = useContext(ProductContext);
-  
+  const { products, product } = useContext(ProductContext);
+  const [deleteItem, setDeleteItem] = useState(product);
   // Delete Product
   const [alertModal, setAlertModal] = useState(false);
-  const [choosedProduct, setChoosedProduct] = useState(null);
 
-  const openAlertModal = (product) => {
-    setChoosedProduct(product);
+  const openAlertModal = () => {
     setAlertModal(true);
   };
 
@@ -52,16 +49,12 @@ export default function ProductsTable() {
   };
 
   const deleteProduct = (row) => {
-    const deleteProduct = products.find((_, index) => index === row);
-    openAlertModal(deleteProduct);
+    const selectedProduct = products.find((_, index) => index === row);
+    setDeleteItem(selectedProduct);
+    openAlertModal();
   };
 
-  const editProduct = (row) => {
-    //identificando elemento
-    const productToEdit = products.find((_, idx) => idx === row);
-    openEditModal(productToEdit);
-  };
-
+  // EDITAR PRODUCTOS
   // EditModal state
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -71,11 +64,18 @@ export default function ProductsTable() {
     setEditModalOpen(true);
   };
 
+  const editProduct = (row) => {
+    //identificando elemento
+    const productToEdit = products.find((_, idx) => idx === row);
+    openEditModal(productToEdit);
+  };
+
   const closeEditModal = () => {
     setEditModalOpen(false);
   };
-  const [cat, setCat] = useState(false);
 
+  // MOBILE
+  const [cat, setCat] = useState(false);
   function handlerCat(e, tipo) {
     setCat(ordenar(cat, products, tipo));
   }
@@ -85,7 +85,7 @@ export default function ProductsTable() {
     <>
       {isMobile ? (
         <Box>
-          {products.map((product, index) => (
+          {products?.map((product) => (
             <Card minW="sm" key={product.id}>
               <CardBody>
                 <Image
@@ -207,7 +207,7 @@ export default function ProductsTable() {
                     <ButtonGroup gap={"4"}>
                       <Button
                         m={5}
-                        color="lightPurple"
+                        color="Purple"
                         size={"xl"}
                         onClick={() => editProduct(index)}
                       >
@@ -215,7 +215,7 @@ export default function ProductsTable() {
                       </Button>
                       <Button
                         m={5}
-                        color="lightPurple"
+                        color="red.500"
                         size={"xl"}
                         onClick={() => deleteProduct(index)}
                       >
@@ -233,12 +233,11 @@ export default function ProductsTable() {
         isOpen={editModalOpen}
         onClose={closeEditModal}
         initialValues={selectedProduct}
-        onSubmit={editProducts}
       />
       <DialogAlert
         isOpen={alertModal}
         onClose={closeAlertModal}
-        product={choosedProduct}
+        product={deleteItem}
       />
     </>
   );

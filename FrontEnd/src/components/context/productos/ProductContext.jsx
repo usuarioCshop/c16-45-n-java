@@ -1,134 +1,120 @@
-import { createContext, useState, useEffect, useMemo } from "react";
+import { createContext, useReducer, useEffect, useMemo } from "react";
 import { PropTypes } from "prop-types";
 import { BASE_URL } from "@/utils/connectApi";
+import prodsReducer from "./ProdsReducer";
 
-export const ProductContext = createContext({
-  products: [],
-  product: {},
-  categories: [],
-  category: {},
-});
+const initialState = {
+  products: [
+    {
+      detalle: "carpeta1",
+      precio: 456.54,
+      codigo: "PROD01",
+      categoria: "categoria1",
+      fechaAlta: "2024-03-04",
+      cantidad: 60,
+      marca: "Arcor",
+      imagenUrl: "http://example.com/imagen.png",
+    },
+    {
+      detalle: "producto2",
+      precio: 789.54,
+      codigo: "PROD02",
+      categoria: "categoria2",
+      fechaAlta: "2024-02-28",
+      cantidad: 30,
+      marca: "LaQue Sea",
+      imagenUrl: "http://example.com/imagen.png",
+    },
+  ],
+  product: {
+    detalle: "",
+    precio: "",
+    codigo: "",
+    categoria: "",
+    fechaAlta: "",
+    cantidad: "",
+    marca: "",
+    imagenUrl: "",
+  },
+  categories: [
+    { nombre: "categoria1", descripcion: "la descripcion de la categoria 1" },
+    { nombre: "categoria2", descripcion: "la descripcion de la categoria 2" },
+    { nombre: "categoria3", descripcion: "la descripcion de la categoria 3" },
+    { nombre: "categoria4", descripcion: "la descripcion de la categoria 4" },
+  ],
+  category: {
+    nombre: "",
+    descripcion: "",
+    activo: true,
+  },
+};
+
+export const ProductContext = createContext(initialState);
 
 export default function ProductContextProvider({ children }) {
-  const [productManager, setProductManager] = useState({
-    products: [],
-    product: {
-      detalle: "",
-      precio: "",
-      codigo: "",
-      categoria: "",
-      fechaAlta: "",
-      cantidad: "",
-      marca: "",
-      imagenUrl: "",
-    },
-    categories: [],
-    category: {
-      nombre: "",
-      descripcion: "",
-    },
-  });
+  const [state, dispatch] = useReducer(prodsReducer, initialState);
 
-  const onFind = (producto) => {
-    if (producto !== "") {
-      setProductManager((prev) => {
-        return {
-          ...prev,
-          products: prev.products.filter((pro) =>
-            pro.detalle.toLowerCase().includes(producto.toLowerCase())
-          ),
-        };
-      });
-    } else {
-      listProducts();
-    }
+  // CATEGORIAS
+  const listCategories = () => {
+    BASE_URL.get("categorias")
+      .then((response) =>
+        dispatch({ type: "LIST_CATEGORIES", payload: response.data })
+      )
+      .catch((error) => console.log(error));
+  };
+
+  const addNewCategory = (newCategory) => {
+    dispatch({ type: "ADD_CATEGORY", payload: newCategory });
+  };
+
+  const editCategories = (category) => {
+    dispatch({ type: "MODIFY_CATEGORY", payload: category });
+  };
+
+  // PRODUCTOS
+  const listProducts = (productsList) => {
+    dispatch({ type: "LIST_PRODUCTS", payload: productsList });
   };
 
   const addProducts = (newProduct) => {
-    BASE_URL.post("nuevo", newProduct);
-    setProductManager((prev) => {
-      return {
-        ...prev,
-        products: [...prev.products, newProduct],
-      };
+    dispatch({ type: "ADD_PRODUCT", payload: newProduct });
+  };
+
+  const editProducts = (product) => {
+    dispatch({ type: "MODIFY_PRODUCT", payload: product });
+  };
+
+  const deleteProducts = (itemDeleted) => {
+    dispatch({ type: "DELETE_PRODUCT", payload: itemDeleted });
+  };
+
+  const onFind = (producto) => {
+    dispatch({
+      type: "FIND_PRODUCT",
+      payload: producto,
     });
-  };
-
-  const editProducts = (product, confirmation) => {
-    console.log(product);
-    console.log(confirmation);
-  };
-
-  const deleteProducts = (itemDeleted, confirmation) => {
-    if (confirmation.current) {
-      setTimeout(() => {
-        BASE_URL.delete(`eliminar/${itemDeleted.id}`);
-      }, 3000);
-      setProductManager((prev) => {
-        return {
-          ...prev,
-          products: prev.products.filter(
-            (product) => product.id !== itemDeleted.id
-          ),
-        };
-      });
-    }
-  };
-  // CATEGORIAS
-  const addNewCategory = (newCategory) => {
-    BASE_URL.post("categorias", newCategory);
-    setProductManager((prev) => {
-      return {
-        categories: [...prev.categories, newCategory],
-      };
-    });
-  };
-
-  const editCategories = (category, confirmation) => {
-    console.log(category);
-    console.log(confirmation);
-  };
-  const listProducts = () => {
-    BASE_URL.get("listar")
-      .then((response) => {
-        setProductManager((prev) => {
-          return {
-            ...prev,
-            products: response.data,
-          };
-        });
-      })
-      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
-    listProducts();
-    BASE_URL.get("categorias")
+    BASE_URL.get("listar")
       .then((response) => {
-        setProductManager((prev) => {
-          return {
-            ...prev,
-            categories: response.data,
-          };
-        });
+        listProducts(response.data);
       })
       .catch((error) => console.log(error));
-  }, [productManager]);
+  }, []);
 
   const productCtxt = useMemo(() => {
     return {
-      products: productManager.products,
-      product: productManager.product,
-      categories: productManager.categories,
-      category: productManager.category,
+      ...state,
       addProducts,
       deleteProducts,
       editProducts,
       addNewCategory,
       editCategories,
+      listCategories,
       onFind,
     };
-  }, [productManager]);
+  }, [state]);
 
   return (
     <ProductContext.Provider value={productCtxt}>
