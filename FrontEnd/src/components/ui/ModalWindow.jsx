@@ -34,8 +34,8 @@ export default function ModalWindow() {
         >
           <AddIcon mx="2" />
           <p>Categoria</p>
-          <PopoverModal isOpen={openPopover} onClose={closeModalOpenPopover} />
         </Button>
+        <PopoverModal isOpen={openPopover} onClose={closeModalOpenPopover} />
         <Button
           backgroundColor={"lightPurple"}
           alignContent={"center"}
