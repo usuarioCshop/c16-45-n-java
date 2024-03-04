@@ -12,12 +12,14 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { ProductContext } from "@/components/context/productos/ProductContext";
+import { BASE_URL } from "@/utils/connectApi";
 
 export default function DialogAlert({ isOpen, onClose, product }) {
   const { deleteProducts } = useContext(ProductContext);
   const cancelRef = useRef();
   const handlerDelete = (value) => {
     setTimeout(() => {
+      BASE_URL.delete(`eliminar/${value.id}`);
       deleteProducts(value);
       onClose();
     }, 2000);
@@ -32,7 +34,7 @@ export default function DialogAlert({ isOpen, onClose, product }) {
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             <h3>Eliminar el Producto:</h3>
-            <p>{product.detalle}</p>
+            <p>{product?.detalle}</p>
           </AlertDialogHeader>
 
           <AlertDialogBody>

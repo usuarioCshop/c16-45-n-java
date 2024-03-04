@@ -4,28 +4,7 @@ import { BASE_URL } from "@/utils/connectApi";
 import prodsReducer from "./ProdsReducer";
 
 const initialState = {
-  products: [
-    {
-      detalle: "carpeta1",
-      precio: 456.54,
-      codigo: "PROD01",
-      categoria: "categoria1",
-      fechaAlta: "2024-03-04",
-      cantidad: 60,
-      marca: "Arcor",
-      imagenUrl: "http://example.com/imagen.png",
-    },
-    {
-      detalle: "producto2",
-      precio: 789.54,
-      codigo: "PROD02",
-      categoria: "categoria2",
-      fechaAlta: "2024-02-28",
-      cantidad: 30,
-      marca: "LaQue Sea",
-      imagenUrl: "http://example.com/imagen.png",
-    },
-  ],
+  products: [],
   product: {
     detalle: "",
     precio: "",
@@ -36,12 +15,7 @@ const initialState = {
     marca: "",
     imagenUrl: "",
   },
-  categories: [
-    { nombre: "categoria1", descripcion: "la descripcion de la categoria 1" },
-    { nombre: "categoria2", descripcion: "la descripcion de la categoria 2" },
-    { nombre: "categoria3", descripcion: "la descripcion de la categoria 3" },
-    { nombre: "categoria4", descripcion: "la descripcion de la categoria 4" },
-  ],
+  categories: [],
   category: {
     nombre: "",
     descripcion: "",
@@ -88,11 +62,23 @@ export default function ProductContextProvider({ children }) {
     dispatch({ type: "DELETE_PRODUCT", payload: itemDeleted });
   };
 
+  const buscador = (prod) => {
+    dispatch({ type: "FIND_PRODUCT", payload: prod });
+  };
+
   const onFind = (producto) => {
-    dispatch({
-      type: "FIND_PRODUCT",
-      payload: producto,
-    });
+    if (producto !== "") {
+      let getProduct = state.products.filter((prod) =>
+        prod.detalle.toLowerCase().includes(producto.toLowerCase())
+      );
+      buscador(getProduct);
+    } else {
+      BASE_URL.get("listar")
+        .then((response) => {
+          listProducts(response.data);
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   useEffect(() => {
