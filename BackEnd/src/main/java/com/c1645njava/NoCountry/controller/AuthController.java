@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin(origins="http://localhost:5173/")
+@CrossOrigin(origins="${URL_API}")
 //@CrossOrigin(origins="https://c16-45-n-java-production.up.railway.app/")
 @RequestMapping("/api/auth")
 public class AuthController {
