@@ -16,7 +16,6 @@ return (
     </LoginContext.Provider>
   );
 };
-
 LoginProvider.propTypes = {
   children: PropTypes.element.isRequired,
 };
