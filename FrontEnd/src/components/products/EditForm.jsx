@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { PropTypes } from "prop-types";
 import {
   Button,
@@ -17,7 +17,10 @@ import { ProductContext } from "../context/productos/ProductContext";
 export default function EditForm({ values, onClose }) {
   const { categories, listCategories, editProducts } =
     useContext(ProductContext);
-  listCategories();
+
+  useEffect(() => {
+    listCategories();
+  }, []);
 
   const formik = useFormik({
     initialValues: values,
@@ -46,7 +49,6 @@ export default function EditForm({ values, onClose }) {
     }),
 
     onSubmit(values) {
-      console.log(values);
       setTimeout(() => {
         editProducts(values);
         onClose();
@@ -59,7 +61,6 @@ export default function EditForm({ values, onClose }) {
   };
 
   const handlerFields = (fieldName, value) => {
-    console.log(value);
     formik.setFieldValue(fieldName, value);
   };
 

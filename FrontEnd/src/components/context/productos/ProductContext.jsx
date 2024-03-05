@@ -29,12 +29,9 @@ export default function ProductContextProvider({ children }) {
   const [state, dispatch] = useReducer(prodsReducer, initialState);
 
   // CATEGORIAS
-  const listCategories = () => {
-    BASE_URL.get("categorias")
-      .then((response) =>
-        dispatch({ type: "LIST_CATEGORIES", payload: response.data })
-      )
-      .catch((error) => console.log(error));
+  const listCategories = async () => {
+    const response = await BASE_URL.get("categorias");
+    dispatch({ type: "LIST_CATEGORIES", payload: response.data });
   };
 
   const addNewCategory = (newCategory) => {

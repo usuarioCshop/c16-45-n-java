@@ -11,7 +11,8 @@ export default function Header() {
       justifyContent="space-evenly"
       alignItems="center"
       top="7rem"
-      flexDirection={["column","row"]}
+      // flexDirection={["column","row"]}
+      w="100%"
     >
       <Heading as="h3" size="2xl"color="darkBlue">
         Productos
