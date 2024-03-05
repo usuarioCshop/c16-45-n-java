@@ -46,6 +46,7 @@ export default function EditForm({ values, onClose }) {
     }),
 
     onSubmit(values) {
+      console.log(values);
       setTimeout(() => {
         editProducts(values);
         onClose();
@@ -58,6 +59,7 @@ export default function EditForm({ values, onClose }) {
   };
 
   const handlerFields = (fieldName, value) => {
+    console.log(value);
     formik.setFieldValue(fieldName, value);
   };
 
@@ -114,10 +116,10 @@ export default function EditForm({ values, onClose }) {
             <FormControl variant="floating" isRequired my="5">
               <Field
                 as={Input}
-                id="codigo"
+                id="codigoBarra"
                 type="text"
                 focusBorderColor="green.500"
-                onChange={(e) => handlerFields("codigo", e.target.value)}
+                onChange={(e) => handlerFields("codigoBarra", e.target.value)}
                 value={formik.values.codigoBarra}
               ></Field>
               <FormLabel
