@@ -83,10 +83,10 @@ export default function PopoverModal({ isOpen, onClose }) {
           {error && <FormErrorMessage value={error.message} />}
           <ButtonGroup display="flex" justifyContent="flex-end">
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              Cancelar
             </Button>
             <Button colorScheme="teal" onClick={saveCategory}>
-              Save
+              Guardar
             </Button>
           </ButtonGroup>
           <PopoverArrow />

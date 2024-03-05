@@ -4,7 +4,7 @@ import ModalWindow from "@/components/ui/ModalWindow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { Filter } from "./Filter";
+import Filter from "./Filter";
 export default function Header() {
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -34,8 +34,7 @@ export default function Header() {
         </IconButton>
         <Box position="relative" rigth="0" top="15px">
           <Filter isOpen={openFilter} onClose={cerrarFilter} />
-      </Box>
-        
+        </Box>
       </Box>
       <Flex width="100%" alignItems="center" justifyContent="center">
         <ModalWindow />

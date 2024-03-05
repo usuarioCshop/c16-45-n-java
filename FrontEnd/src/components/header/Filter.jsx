@@ -1,27 +1,31 @@
-import { Button, ButtonGroup } from "@chakra-ui/button";
-import { Input } from "@chakra-ui/input";
-import { useContext, useState } from "react";
-import { ProductContext } from "../context/productos/ProductContext";
+import { useState, useEffect, useContext } from "react";
+import { PropTypes } from "prop-types";
 import {
+  Checkbox,
+  Input,
+  Button,
+  ButtonGroup,
   Popover,
+  PopoverContent,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverContent,
-} from "@chakra-ui/popover";
-import { FocusLock } from "@chakra-ui/focus-lock";
-import {
+  FocusLock,
   FormControl,
-  FormErrorMessage,
   FormLabel,
-} from "@chakra-ui/form-control";
-import { Checkbox } from "@chakra-ui/checkbox";
-import { Select } from "@chakra-ui/select";
-import { useEffect } from "react";
-
-import { Formik, Form, Field, useFormik } from "formik";
+  Stack,
+  ScaleFade,
+  HStack,
+  Select,
+} from "@chakra-ui/react";
+import { useFormik, Formik, Field, Form } from "formik";
 import * as Yup from "yup";
+import { ProductContext } from "../context/productos/ProductContext";
 
-export const Filter = ({ isOpen, onClose }) => {
+export default function Filter({ isOpen, onClose }) {
+  const [openFormPrice, setOpenFormPrice] = useState(false);
+  const [openFormQuantity, setOpenFormQuantity] = useState(false);
+  const [openFormCode, setOpenFormCode] = useState(false);
+  const [openFormCategories, setOpenFormCategories] = useState(false);
   const { categories, listCategories } = useContext(ProductContext);
 
   useEffect(() => {
@@ -54,19 +58,39 @@ export const Filter = ({ isOpen, onClose }) => {
     onSubmit(values) {
       setTimeout(() => {
         filtroSelected(values);
-        console.log(values);
         // onClose();
       }, 2000);
     },
   });
 
+  const toggleFormPrice = (status) => {
+    return status.target.checked
+      ? setOpenFormPrice(true)
+      : setOpenFormPrice(false);
+  };
+
+  const toggleFormQuantity = (status) => {
+    return status.target.checked
+      ? setOpenFormQuantity(true)
+      : setOpenFormQuantity(false);
+  };
+
+  const toggleFormCode = (status) => {
+    return status.target.checked
+      ? setOpenFormCode(true)
+      : setOpenFormCode(false);
+  };
+
+  const toggleFormCategories = (status) => {
+    return status.target.checked
+      ? setOpenFormCategories(true)
+      : setOpenFormCategories(false);
+  };
+
   const filtroSelected = (valores) => {
     console.log(valores);
     onClose();
   };
-//   const handlerFields = (fieldName, value) => {
-//     formik.setFieldValue(fieldName, value);
-//   };
 
   return (
     <Formik>
@@ -79,119 +103,147 @@ export const Filter = ({ isOpen, onClose }) => {
         >
           <PopoverContent p={5}>
             <FocusLock returnFocus persistentFocus={false}>
-              <Checkbox name="codigo">Código</Checkbox>
+              <Stack>
+                <Checkbox onChange={(e) => toggleFormCode(e)}>codigo</Checkbox>
+                {openFormCode && (
+                  <ScaleFade initialScale={0.9} in={openFormPrice}>
+                    <FormControl variant="floating" my="5" size="sm">
+                      <Field
+                        as={Input}
+                        type="text"
+                        focusBorderColor="green.500"
+                        placeholder="agrega tu categoria"
+                        //   onChange={(e) => handlerFields("detalle", e.target.value)}
+                        // value={formik.values.detalle}
+                      />
+                      <FormLabel
+                        htmlFor="productImage"
+                        fontWeight="bold"
+                        backgroundColor="white"
+                      >
+                        Codigo
+                      </FormLabel>
+                    </FormControl>
+                  </ScaleFade>
+                )}
 
-              <FormControl variant="floating" my="5" size="sm">
-                <Field
-                as={Input}
-                  type="text"
-                  focusBorderColor="green.500"
-                  placeholder="agrega tu categoria"
-                  //   onChange={(e) => handlerFields("detalle", e.target.value)}
-                  // value={formik.values.detalle}
-                  // ref={newCategory}
-                />
-                <FormLabel
-                  htmlFor="productImage"
-                  fontWeight="bold"
-                  backgroundColor="white"
-                >
-                  Codigo
-                </FormLabel>
-              </FormControl>
-              {/* {error && <FormErrorMessage value={error.message} />} */}
-              <Checkbox nema="precio">Precio</Checkbox>
-              <FormControl variant="floating" my="5" size="sm">
-                <Field
-                    as={Input}
-                  type="text"
-                  focusBorderColor="green.500"
-                  name="minPrecio"
-                  // ref={descriptionCategory}
-                />
-                <FormLabel
-                  htmlFor="minPrecio"
-                  fontWeight="bold"
-                  backgroundColor="white"
-                >
-                  Mín.
-                </FormLabel>
-              </FormControl>
-              <FormControl variant="floating" my="5" size="sm">
-              <Field
-                    as={Input}
-                  type="text"
-                  focusBorderColor="green.500"
-                  name="maxPrecio"
-                  // ref={descriptionCategory}
-                />
-                <FormLabel
-                  htmlFor="maxPrecio"
-                  fontWeight="bold"
-                  backgroundColor="white"
-                >
-                  Máx.
-                </FormLabel>
-              </FormControl>
-              {/* {error && <FormErrorMessage value={error.message} />} */}
-              <Checkbox nema="cantidad">Cantidad</Checkbox>
-              <FormControl variant="floating" my="5" size="sm">
-              <Field
-                    as={Input}
-                  type="text"
-                  focusBorderColor="green.500"
-                  name="canMin"
-                  // ref={descriptionCategory}
-                />
-                <FormLabel
-                  htmlFor="canMin"
-                  fontWeight="bold"
-                  backgroundColor="white"
-                >
-                  Min
-                </FormLabel>
-              </FormControl>
+                <Checkbox onChange={(e) => toggleFormPrice(e)}>precio</Checkbox>
+                {openFormPrice && (
+                  <ScaleFade initialScale={0.9} in={openFormPrice}>
+                    <HStack>
+                      <FormControl variant="floating" my="5" size="sm">
+                        <Field
+                          as={Input}
+                          type="Number"
+                          focusBorderColor="green.500"
+                          name="minPrecio"
+                          // ref={descriptionCategory}
+                        />
+                        <FormLabel
+                          htmlFor="minPrecio"
+                          fontWeight="bold"
+                          backgroundColor="white"
+                        >
+                          Mín.
+                        </FormLabel>
+                      </FormControl>
+                      <FormControl variant="floating" my="5" size="sm">
+                        <Field
+                          as={Input}
+                          type="Number"
+                          focusBorderColor="green.500"
+                          name="maxPrecio"
+                        />
+                        <FormLabel
+                          htmlFor="maxPrecio"
+                          fontWeight="bold"
+                          backgroundColor="white"
+                        >
+                          Máx.
+                        </FormLabel>
+                      </FormControl>
+                    </HStack>
+                  </ScaleFade>
+                )}
 
-              <FormControl variant="floating" my="5" size="sm">
-              <Field
-                    as={Input}
-                  type="text"
-                  focusBorderColor="green.500"
-                  name="canMax"
-                  // ref={descriptionCategory}
-                />
-                <FormLabel
-                  htmlFor="canMax"
-                  fontWeight="bold"
-                  backgroundColor="white"
+                <Checkbox onChange={(e) => toggleFormQuantity(e)}>
+                  cantidad
+                </Checkbox>
+                {openFormQuantity && (
+                  <ScaleFade initialScale={0.9} in={openFormQuantity}>
+                    <HStack>
+                      <FormControl variant="floating" my="5" size="sm">
+                        <Field
+                          as={Input}
+                          type="Number"
+                          focusBorderColor="green.500"
+                          name="minCantidad"
+                        />
+                        <FormLabel
+                          htmlFor="minCantidad"
+                          fontWeight="bold"
+                          backgroundColor="white"
+                        >
+                          Mín.
+                        </FormLabel>
+                      </FormControl>
+                      <FormControl variant="floating" my="5" size="sm">
+                        <Field
+                          as={Input}
+                          type="Number"
+                          focusBorderColor="green.500"
+                          name="maxCantidad"
+                        />
+                        <FormLabel
+                          htmlFor="maxCantidad"
+                          fontWeight="bold"
+                          backgroundColor="white"
+                        >
+                          Máx.
+                        </FormLabel>
+                      </FormControl>
+                    </HStack>
+                  </ScaleFade>
+                )}
+
+                <Checkbox
+                  nema="categoria"
+                  onChange={(e) => toggleFormCategories(e)}
                 >
-                  Max
-                </FormLabel>
-              </FormControl>
-              {/* {error && <FormErrorMessage value={error.message} />} */}
-              <Checkbox nema="categoria">Categoria</Checkbox>
-              <FormControl variant="floating" my="5" size="sm">
-              <Field
-                as={Select}
-                placeholder="Selecciona una categoria"
-                name="category"
-                focusBorderColor="green.500"
-                // onChange={handlerCategory}
-                // value={(props.values.category = selectedCategory)}
-              >
-                {categories?.map((category) => {
-                  return (
-                    <option value={category.nombre} key={category.nombre}>
-                      {category.nombre}
-                    </option>
-                  );
-                })}
-                <option value="add">Agregar Categoria</option>
-              </Field>
-              </FormControl>
-              {/* {error && <FormErrorMessage value={error.message} />} */}
+                  categoria
+                </Checkbox>
+                {openFormCategories && (
+                  <ScaleFade initialScale={0.9} in={openFormCategories}>
+                    <FormControl variant="floating" my="5" size="sm">
+                      <Field
+                        as={Select}
+                        name="category"
+                        focusBorderColor="green.500"
+                        placeholder="Selecciona una Categoria"
+                        // onChange={handlerCategory}
+                        // value={(props.values.category = selectedCategory)}
+                      >
+                        {categories?.map((category) => {
+                          return (
+                            <option
+                              value={category.nombre}
+                              key={category.nombre}
+                            >
+                              {category.nombre}
+                            </option>
+                          );
+                        })}
+                      </Field>
+                    </FormControl>
+                  </ScaleFade>
+                )}
+              </Stack>
+
               <ButtonGroup display="flex" justifyContent="flex-end">
-                <Button variant="outline" onClick={filtroSelected}>
+                <Button variant="outline" onClick={onClose}>
+                  Cancelar
+                </Button>
+                <Button type="submit" colorScheme="teal" bg="green.500">
                   Filtrar
                 </Button>
               </ButtonGroup>
@@ -203,4 +255,8 @@ export const Filter = ({ isOpen, onClose }) => {
       </Form>
     </Formik>
   );
+}
+Filter.propTypes = {
+  onClose: PropTypes.func,
+  isOpen: PropTypes.bool,
 };

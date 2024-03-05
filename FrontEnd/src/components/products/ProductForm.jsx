@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
 import {
   Button,
@@ -23,7 +23,9 @@ export default function ProductForm({ showform }) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openPopover, setOpenPopover] = useState(false);
 
-  listCategories();
+  useEffect(() => {
+    listCategories();
+  }, []);
 
   const handlerButton = (errors) => {
     return Object.keys(errors).length !== 0;

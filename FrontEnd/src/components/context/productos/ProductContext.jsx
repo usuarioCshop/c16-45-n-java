@@ -31,7 +31,6 @@ export default function ProductContextProvider({ children }) {
   // CATEGORIAS
   const listCategories = async () => {
     const response = await BASE_URL.get("categorias");
-   
     dispatch({ type: "LIST_CATEGORIES", payload: response.data });
   };
 

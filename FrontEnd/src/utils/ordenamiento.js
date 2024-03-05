@@ -76,8 +76,3 @@ export default function ordenar(cat,products,tipo){
   
     return(!cat);
 }
-// export default function ordenar(category, product, type) {
-//   console.log(category);
-//   console.log(product);
-//   console.log(type);
-// }
