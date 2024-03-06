@@ -45,4 +45,9 @@ public class ProductoServiceImplements implements ProductoService {
     public void eliminarProducto(Long id) {
         repositorio.deleteById(id);
     }
+
+    @Override
+    public List<Producto> filtrarPorPrecio(double minimo, double maximo) {
+        return repositorio.findByPrecioBetween(minimo, maximo);
+    }
 }
