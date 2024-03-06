@@ -18,8 +18,7 @@ function App() {
         alignContent="center"
         justifyContent="center"
         minH="100vh"
-        minW="100vw"
-      >
+        minW="100vw"      >
         <Routes>
           <Route exact path="/" element={<Login />}></Route>
           <Route exact path="/productos" element={<Principal />}></Route>

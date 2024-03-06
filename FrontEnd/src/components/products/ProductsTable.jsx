@@ -88,7 +88,7 @@ export default function ProductsTable() {
           {products?.map((product) => (
             <Card key={product.id}>
               <CardBody>
-                <Image
+                <Image 
                   src={product.imagenUrl}
                   alt="articulos de libreria"
                   borderRadius="lg"
@@ -117,14 +117,14 @@ export default function ProductsTable() {
           ))}
         </Box>
       ) : (
-        <TableContainer p="2.5" position="relative" top="8rem" maxW="100%">
-          <Table variant={"striped"} colorScheme="telegram">
+        <TableContainer p="2.5" position="relative" maxW="100%">
+          <Table variant={"simple"} colorScheme="telegram">
             <Thead>
               <Tr>
                 <Th color="black" fontWeight="900">
                   imagen
                 </Th>
-                <Th color="lightPurple">
+                <Th color="lightPurple" >
                   Detalle
                   <IconButton
                     variant="outline"
@@ -198,12 +198,12 @@ export default function ProductsTable() {
                   <Td>
                     <Img src={product.imagenUrl} width="100px" />
                   </Td>
-                  <Td>{product.detalle}</Td>
+                  <Td  overflow="hidden">{product.detalle}</Td>
                   <Td>{product.codigoBarra}</Td>
                   <Td>{product.categoria}</Td>
-                  <Td>$ {product.precio}</Td>
-                  <Td>{product.cantidad}</Td>
-                  <Td>
+                  <Td maxW="100px">$ {product.precio}</Td>
+                  <Td maxW="100px">{product.cantidad}</Td>
+                  <Td maxW="100px">
                     <ButtonGroup gap={"4"}>
                       <Button
                         m={5}

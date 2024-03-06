@@ -13,6 +13,8 @@ import {
   MenuButton,
   MenuItem,
   Button,
+  Text,
+
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 
@@ -38,11 +40,32 @@ export default function Navbar() {
       left="0"
     >
       <Image
-        boxSize="50px"
+        boxSize="100px"
         objectFit="cover"
-        src="https://bit.ly/dan-abramov"
+        src="https://i.postimg.cc/KjvjxVJ9/version-Letras-Mas-Grandes.png"
+
         alt="brand_logo"
+      
       />
+      <Box>
+        <Text as="a"
+        p="5px"
+        m="5px"
+        cursor={"pointer"}
+        textDecorationStyle={"none"}
+        >Stock</Text>
+       <Text as="a"
+        p="5px"
+        m="5px"
+        cursor={"pointer"}
+        textDecorationStyle={"none"}>Categorias</Text>
+        <Text as="a"
+        p="5px"
+        m="5px"
+        cursor={"pointer"}
+        textDecorationStyle={"none"}>Transacciones</Text>
+      </Box>
+
       <Box display="flex" alignItems="center" mx="5">
         <WrapItem mx="2">
           <Avatar name="username" src="https://bit.ly/dan-abramov" />

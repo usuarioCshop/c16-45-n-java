@@ -35,8 +35,10 @@ export default function Filter({ isOpen, onClose }) {
   const formik = useFormik({
     initialValues: {
       codigo: "",
-      precio: 0.0,
-      cantidad: "",
+      minPrecio: 0.0,
+      maxPrecio: 0.0,
+      minCantidad: 0,
+      maxCantidad: 0,
       categoria: "",
     },
     validationSchema: Yup.object({
@@ -55,11 +57,9 @@ export default function Filter({ isOpen, onClose }) {
         .required("Coloca la cantidad de productos"),
     }),
 
-    onSubmit(values) {
-      setTimeout(() => {
-        filtroSelected(values);
-        // onClose();
-      }, 2000);
+    onSubmit: (values) => {
+      console.log(values);
+     
     },
   });
 
@@ -91,6 +91,16 @@ export default function Filter({ isOpen, onClose }) {
     console.log(valores);
     onClose();
   };
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const handlerCategory = (event) => {
+    const chooseValue = event.target.value;
+    setSelectedCategory(chooseValue);
+  };
+
+  const handlerFields = (fieldName, value) => {
+    formik.setFieldValue(fieldName, value);
+  };
 
   return (
     <Formik>
@@ -111,10 +121,12 @@ export default function Filter({ isOpen, onClose }) {
                       <Field
                         as={Input}
                         type="text"
+                        name="codigo"
                         focusBorderColor="green.500"
-                        placeholder="agrega tu categoria"
-                        //   onChange={(e) => handlerFields("detalle", e.target.value)}
-                        // value={formik.values.detalle}
+                        onChange={(e) =>
+                          handlerFields("codigo", e.target.value)
+                        }
+                        value={formik.values.codigo}
                       />
                       <FormLabel
                         htmlFor="productImage"
@@ -137,7 +149,10 @@ export default function Filter({ isOpen, onClose }) {
                           type="Number"
                           focusBorderColor="green.500"
                           name="minPrecio"
-                          // ref={descriptionCategory}
+                          value={formik.values.minPrecio}
+                          onChange={(e) =>
+                            handlerFields("minPrecio", e.target.value)
+                          }
                         />
                         <FormLabel
                           htmlFor="minPrecio"
@@ -153,6 +168,10 @@ export default function Filter({ isOpen, onClose }) {
                           type="Number"
                           focusBorderColor="green.500"
                           name="maxPrecio"
+                          value={formik.values.maxPrecio}
+                          onChange={(e) =>
+                            handlerFields("maxPrecio", e.target.value)
+                          }
                         />
                         <FormLabel
                           htmlFor="maxPrecio"
@@ -178,6 +197,10 @@ export default function Filter({ isOpen, onClose }) {
                           type="Number"
                           focusBorderColor="green.500"
                           name="minCantidad"
+                          onChange={(e) =>
+                            handlerFields("minCantidad", e.target.value)
+                          }
+                          value={formik.values.minCantidad}
                         />
                         <FormLabel
                           htmlFor="minCantidad"
@@ -193,6 +216,10 @@ export default function Filter({ isOpen, onClose }) {
                           type="Number"
                           focusBorderColor="green.500"
                           name="maxCantidad"
+                          onChange={(e) =>
+                            handlerFields("maxCantidad", e.target.value)
+                          }
+                          value={formik.values.maxCantidad}
                         />
                         <FormLabel
                           htmlFor="maxCantidad"
@@ -220,8 +247,8 @@ export default function Filter({ isOpen, onClose }) {
                         name="category"
                         focusBorderColor="green.500"
                         placeholder="Selecciona una Categoria"
-                        // onChange={handlerCategory}
-                        // value={(props.values.category = selectedCategory)}
+                        onChange={handlerCategory}
+                        value={(formik.values.categoria = selectedCategory)}
                       >
                         {categories?.map((category) => {
                           return (
@@ -243,7 +270,11 @@ export default function Filter({ isOpen, onClose }) {
                 <Button variant="outline" onClick={onClose}>
                   Cancelar
                 </Button>
-                <Button type="submit" colorScheme="teal" bg="green.500">
+                <Button
+                  type="submit"
+                  colorScheme="teal"
+                  bg="green.500"
+                >
                   Filtrar
                 </Button>
               </ButtonGroup>
