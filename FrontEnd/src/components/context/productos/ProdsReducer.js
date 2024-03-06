@@ -29,6 +29,15 @@ export default function prodsReducer(state, action) {
         products: [...state.products],
         categories: [...state.categories, action.payload],
       };
+    case "FILTER_BY_CATEGORY":
+      return {
+        products: state.products.filter(
+          (product) => product.categoria === action.payload
+        ),
+      };
+    case "FILTER_BY_PRICE":
+    case "FILTER_BY_QUANTITY":
+    case "FILTER_BY_CODE":
     default:
       return state;
   }

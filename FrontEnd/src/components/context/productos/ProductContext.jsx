@@ -28,6 +28,23 @@ export const ProductContext = createContext(initialState);
 export default function ProductContextProvider({ children }) {
   const [state, dispatch] = useReducer(prodsReducer, initialState);
 
+  //FILTRADOS
+  const filterByCategory = (filterValue) => {
+    dispatch({ type: "FILTER_BY_CATEGORY", payload: filterValue });
+  };
+
+  const filterByPrice = (min, max) => {
+    dispatch({ type: "FILTER_BY_PRICE", payload: { min, max } });
+  };
+
+  const filterByQuantity = (min, max) => {
+    dispatch({ type: "FILTER_BY_QUANTITY", payload: { min, max } });
+  };
+
+  const filterByCode = (filterValue) => {
+    dispatch({ type: "FILTER_BY_CODE", payload: filterValue });
+  };
+
   // CATEGORIAS
   const listCategories = async () => {
     const response = await BASE_URL.get("categorias");
@@ -96,6 +113,10 @@ export default function ProductContextProvider({ children }) {
       editCategories,
       listCategories,
       onFind,
+      filterByCategory,
+      filterByCode,
+      filterByPrice,
+      filterByQuantity,
     };
   }, [state]);
 
