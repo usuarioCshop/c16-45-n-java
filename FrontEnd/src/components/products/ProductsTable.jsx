@@ -21,6 +21,8 @@ import {
   Divider,
   CardFooter,
   Box,
+  useColorMode,
+  useTheme,
 } from "@chakra-ui/react";
 import {
   ChevronDownIcon,
@@ -37,6 +39,8 @@ export default function ProductsTable() {
   //Products List
   const { products, product } = useContext(ProductContext);
   const [deleteItem, setDeleteItem] = useState(product);
+  const { colorMode, toggleColorMode } = useColorMode();
+  const theme = useTheme();
   // Delete Product
   const [alertModal, setAlertModal] = useState(false);
 
@@ -121,7 +125,7 @@ export default function ProductsTable() {
           <Table variant={"simple"} colorScheme="telegram">
             <Thead>
               <Tr>
-                <Th color="black" fontWeight="900">
+                <Th color={colorMode==="dark"?theme.colors.AlmosWhitePurple:theme.colors.darkBlue} fontWeight="900">
                   imagen
                 </Th>
                 <Th color="lightPurple" >
@@ -139,7 +143,7 @@ export default function ProductsTable() {
                     {cat ? <ChevronDownIcon /> : <ChevronUpIcon />}
                   </IconButton>
                 </Th>
-                <Th color="black" fontWeight="900">
+                <Th color={colorMode==="dark"?theme.colors.AlmosWhitePurple:theme.colors.darkBlue} fontWeight="900">
                   Código
                 </Th>
                 <Th color="lightPurple">
@@ -187,7 +191,7 @@ export default function ProductsTable() {
                     {cat ? <ChevronDownIcon /> : <ChevronUpIcon />}
                   </IconButton>
                 </Th>
-                <Th color="black" fontWeight="900">
+                <Th color={colorMode==="dark"?theme.colors.AlmosWhitePurple:theme.colors.darkBlue} fontWeight="900">
                   acciones
                 </Th>
               </Tr>

@@ -1,4 +1,4 @@
-import { IconButton, Heading, Box, Flex, Icon } from "@chakra-ui/react";
+import { IconButton, Heading, Box, Flex, Icon, useColorMode, useTheme } from "@chakra-ui/react";
 import Searchbar from "./Searchbar";
 import ModalWindow from "@/components/ui/ModalWindow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,11 +7,11 @@ import { useState } from "react";
 import Filter from "./Filter";
 export default function Header() {
   const [openFilter, setOpenFilter] = useState(false);
-
+  const { colorMode, toggleColorMode } = useColorMode();
   const abrirFilter = () => {
     setOpenFilter(true);
   };
-
+  const theme = useTheme();
   const cerrarFilter = () => {
     setOpenFilter(false);
   };
@@ -22,7 +22,7 @@ export default function Header() {
       top="7rem"
       flexDirection={["column", "row"]}
     >
-      <Heading as="h3" size="2xl" color="darkBlue">
+      <Heading as="h3" size="2xl" color={colorMode==="dark"?theme.colors.AlmosWhitePurple:theme.colors.darkBlue}>
         Productos
       </Heading>
       <Box display="flex" w="80%" p="2">

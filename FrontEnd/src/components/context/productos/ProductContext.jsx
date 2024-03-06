@@ -29,23 +29,35 @@ export default function ProductContextProvider({ children }) {
   const [state, dispatch] = useReducer(prodsReducer, initialState);
 
   //FILTRADOS
-  const filterByCategory = (filterValue) => {
-    dispatch({ type: "FILTER_BY_CATEGORY", payload: filterValue });
+  //prueba de acceso al endpoint de filtrar-precio
+  const filterTodo = async (values) => {
+    const parameters = {
+      min:values.minPrecio,
+      max:values.maxPrecio,
+    }
+    const response = await BASE_URL.get("filtrar-precio",{params:parameters});
+    dispatch({ type: "FILTRAR_TODO", payload: response.data });
   };
+  
+  // const filterByCategory = (filterValue) => {
+  //   dispatch({ type: "FILTER_BY_CATEGORY", payload: filterValue });
+  // };
 
-  const filterByPrice = (min, max) => {
-    dispatch({ type: "FILTER_BY_PRICE", payload: { min, max } });
-  };
+  // const filterByPrice = (min, max) => {
+  //   dispatch({ type: "FILTER_BY_PRICE", payload: { min, max } });
+  // };
 
-  const filterByQuantity = (min, max) => {
-    dispatch({ type: "FILTER_BY_QUANTITY", payload: { min, max } });
-  };
+  // const filterByQuantity = (min, max) => {
+  //   dispatch({ type: "FILTER_BY_QUANTITY", payload: { min, max } });
+  // };
 
-  const filterByCode = (filterValue) => {
-    dispatch({ type: "FILTER_BY_CODE", payload: filterValue });
-  };
+  // const filterByCode = (filterValue) => {
+  //   dispatch({ type: "FILTER_BY_CODE", payload: filterValue });
+  // };
 
   // CATEGORIAS
+  
+  //
   const listCategories = async () => {
     const response = await BASE_URL.get("categorias");
     dispatch({ type: "LIST_CATEGORIES", payload: response.data });
@@ -113,10 +125,11 @@ export default function ProductContextProvider({ children }) {
       editCategories,
       listCategories,
       onFind,
-      filterByCategory,
-      filterByCode,
-      filterByPrice,
-      filterByQuantity,
+      // filterByCategory,
+      // filterByCode,
+      // filterByPrice,
+      // filterByQuantity,
+      filterTodo,
     };
   }, [state]);
 

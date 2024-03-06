@@ -30,15 +30,16 @@ export default function Filter({ isOpen, onClose }) {
   const {
     categories,
     listCategories,
-    filterByCategory,
-    filterByCode,
-    filterByPrice,
-    filterByQuantity,
+    // filterByCategory,
+    // filterByCode,
+    // filterByPrice,
+    // filterByQuantity,
+    filterTodo,
   } = useContext(ProductContext);
 
   useEffect(() => {
     listCategories();
-  }, [listCategories]);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -102,21 +103,9 @@ export default function Filter({ isOpen, onClose }) {
   };
 
   const filtroSelected = (values) => {
-    console.log(values);
-    if (values.categoria) {
-      return filterByCategory(values.categoria);
-    }
-    if (values.codigo) {
-      return filterByCode(values.codigo);
-    }
-
-    if (values.minPrecio !== 0 && values.maxPrecio !== 0) {
-      return filterByPrice(values.minPrecio, values.maxPrecio);
-    }
-
-    if (values.minCantidad !== 0 && values.maxCantidad !== 0) {
-      return filterByPrice(values.minCantidad, values.maxCantidad);
-    }
+    //  console.log(values);
+     filterTodo(values)
+    onClose()
   };
 
   const handlerCategory = (event) => {
@@ -313,7 +302,7 @@ export default function Filter({ isOpen, onClose }) {
                     type="submit"
                     isLoading={isSubmitting}
                     colorScheme="teal"
-                    onClick={filtroSelected(formik.values)}
+                    onClick={()=>{filtroSelected(formik.values)}}
                     bg="green.500"
                   >
                     Filtrar
