@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
 import {
   Button,
@@ -13,10 +13,12 @@ import {
 import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import * as Yup from "yup";
 import { ProductContext } from "../context/productos/ProductContext";
+import SuccessModal from "@/components/ui/SuccessModal";
 
 export default function EditForm({ values, onClose }) {
   const { categories, listCategories, editProducts } =
     useContext(ProductContext);
+  const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
   useEffect(() => {
     listCategories();
@@ -49,9 +51,9 @@ export default function EditForm({ values, onClose }) {
     }),
 
     onSubmit(values) {
+      toOpenSuccessModal();
       setTimeout(() => {
         editProducts(values);
-        onClose();
       }, 2000);
     },
   });
@@ -62,6 +64,14 @@ export default function EditForm({ values, onClose }) {
 
   const handlerFields = (fieldName, value) => {
     formik.setFieldValue(fieldName, value);
+  };
+
+  const toOpenSuccessModal = () => {
+    setOpenSuccessModal(true);
+  };
+  const closeSuccessModal = () => {
+    onClose();
+    setOpenSuccessModal(false);
   };
 
   return (
@@ -248,17 +258,18 @@ export default function EditForm({ values, onClose }) {
           </Form>
         )}
       </Formik>
+      <SuccessModal
+        isOpen={openSuccessModal}
+        onClose={closeSuccessModal}
+        textValue={"producto modificado exitosamente"}
+      />
     </Box>
   );
 }
 
 EditForm.propTypes = {
   onClose: PropTypes.func,
-  handleSubmit: PropTypes.func,
-  handleChange: PropTypes.func,
   errors: PropTypes.func,
   values: PropTypes.object,
-  getFieldProps: PropTypes.func,
-  getFieldMeta: PropTypes.func,
   isSubmitting: PropTypes.func,
 };

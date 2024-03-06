@@ -15,13 +15,14 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ProductContext } from "@/components/context/productos/ProductContext";
 import { BASE_URL } from "@/utils/connectApi";
-
+import SuccessModal from "@/components/ui/SuccessModal";
 export default function ProductForm({ showform }) {
   let { product, addProducts, categories, addNewCategory, listCategories } =
     useContext(ProductContext);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [openPopover, setOpenPopover] = useState(false);
+  const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
   useEffect(() => {
     listCategories();
@@ -46,6 +47,14 @@ export default function ProductForm({ showform }) {
 
   const closeHandler = () => {
     setOpenPopover(false);
+  };
+
+  const toOpenSuccessModal = () => {
+    setOpenSuccessModal(true);
+  };
+  const closeSuccessModal = () => {
+    showform();
+    setOpenSuccessModal(false);
   };
 
   return (
@@ -105,11 +114,11 @@ export default function ProductForm({ showform }) {
             marca: values.brand,
             imagenUrl: values.image,
           };
+          toOpenSuccessModal();
           setTimeout(() => {
             addProducts(product);
             BASE_URL.post("nuevo", product);
-            showform();
-          }, 3000);
+          }, 10000);
         }}
       >
         {(props) => (
@@ -284,6 +293,11 @@ export default function ProductForm({ showform }) {
           </Form>
         )}
       </Formik>
+      <SuccessModal
+        isOpen={openSuccessModal}
+        onClose={closeSuccessModal}
+        textValue={"producto agregado exitosamente"}
+      />
     </Box>
   );
 }
