@@ -29,21 +29,21 @@ export default function ProductContextProvider({ children }) {
   const [state, dispatch] = useReducer(prodsReducer, initialState);
 
   //FILTRADOS
-  const filterByCategory = (filterValue) => {
-    dispatch({ type: "FILTER_BY_CATEGORY", payload: filterValue });
-  };
+  // const filterByCategory = (filterValue) => {
+  //   dispatch({ type: "FILTER_BY_CATEGORY", payload: filterValue });
+  // };
 
-  const filterByPrice = (min, max) => {
-    dispatch({ type: "FILTER_BY_PRICE", payload: { min, max } });
-  };
+  // const filterByPrice = (min, max) => {
+  //   dispatch({ type: "FILTER_BY_PRICE", payload: { min, max } });
+  // };
 
-  const filterByQuantity = (min, max) => {
-    dispatch({ type: "FILTER_BY_QUANTITY", payload: { min, max } });
-  };
+  // const filterByQuantity = (min, max) => {
+  //   dispatch({ type: "FILTER_BY_QUANTITY", payload: { min, max } });
+  // };
 
-  const filterByCode = (filterValue) => {
-    dispatch({ type: "FILTER_BY_CODE", payload: filterValue });
-  };
+  // const filterByCode = (filterValue) => {
+  //   dispatch({ type: "FILTER_BY_CODE", payload: filterValue });
+  // };
 
   // CATEGORIAS
   const listCategories = async () => {
@@ -113,10 +113,10 @@ export default function ProductContextProvider({ children }) {
       editCategories,
       listCategories,
       onFind,
-      filterByCategory,
-      filterByCode,
-      filterByPrice,
-      filterByQuantity,
+      // filterByCategory,
+      // filterByCode,
+      // filterByPrice,
+      // filterByQuantity,
     };
   }, [state]);
 
