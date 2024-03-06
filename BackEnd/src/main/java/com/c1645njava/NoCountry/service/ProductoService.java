@@ -16,4 +16,7 @@ public interface ProductoService {
 
     void eliminarProducto(Long id);
 
+    //Creado para filtrar por precio min y max de productos
+    List<Producto> filtrarPorPrecio(double min, double max);
+
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //@CrossOrigin(origins = "http://localhost:5173/")
@@ -83,6 +84,7 @@ public class ProductoController {
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
 
 
@@ -94,5 +96,25 @@ public class ProductoController {
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    //Filtrar por rango de precio Min y Max
+    @GetMapping("/filtrar-precio")
+    public ResponseEntity<List<Producto>> listarPorPrecio(@RequestParam(value = "min", required = false) Double min,
+                                                          @RequestParam(value = "max", required = false) Double max) {
+        // Verifica si se proporcionaron valores mínimos y máximos
+        if (min == null && max == null) {
+            // Si no se proporcionaron valores, devuelve todos los productos
+            List<Producto> todosLosProductos = productoService.listarProductos();
+            return ResponseEntity.ok(todosLosProductos);
+        }
+
+        // Si se proporcionaron valores, filtra los productos por precio
+        List<Producto> productosFiltrados = productoService.filtrarPorPrecio(min != null ? min : 0, max != null ? max : Double.MAX_VALUE);
+        return ResponseEntity.ok(productosFiltrados);
+    }
+
+
+
 
 }
