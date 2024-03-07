@@ -49,15 +49,15 @@ public class ProductoServiceImplements implements ProductoService {
 
     @Override
     public List<Producto> filtrarPorPrecio(
-            String codigo, double minPrecio, double maxPrecio, int minCantidad, int maxCantidad, String categoria
+            String codigo, Double minPrecio, Double maxPrecio, Integer minCantidad, Integer maxCantidad, String categoria
     ) {
         return repositorio.findAll().stream()
-                .filter(producto -> producto.getCodigoBarra().contains(codigo))
-                .filter(producto -> producto.getPrecio() >= minPrecio)
-                .filter(producto -> producto.getPrecio() >= maxPrecio)
-                .filter(producto -> producto.getCantidad() >= minCantidad)
-                .filter(producto -> producto.getCantidad() >= maxCantidad)
-                .filter(producto -> producto.getCategoria().contains(categoria))
+                .filter(producto -> (codigo == null || producto.getCodigoBarra().contains(codigo)))
+                .filter(producto -> (minPrecio == null || producto.getPrecio() >= minPrecio))
+                .filter(producto -> (maxPrecio == null || producto.getPrecio() <= maxPrecio))
+                .filter(producto -> (minCantidad == null || producto.getCantidad() >= minCantidad))
+                .filter(producto -> (maxCantidad == null || producto.getCantidad() <= maxCantidad))
+                .filter(producto -> (categoria == null || producto.getCategoria().contains(categoria)))
                 .collect(Collectors.toList());
     }
 }

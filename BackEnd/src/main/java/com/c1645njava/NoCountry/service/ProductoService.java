@@ -18,6 +18,6 @@ public interface ProductoService {
 
     //Creado para filtrar por precio min y max de productos
     List<Producto> filtrarPorPrecio(
-            String codigo, double minPrecio, double maxPrecio, int minCantidad, int maxCantidad, String categoria
+            String codigo, Double minPrecio, Double maxPrecio, Integer minCantidad, Integer maxCantidad, String categoria
     );
 }
