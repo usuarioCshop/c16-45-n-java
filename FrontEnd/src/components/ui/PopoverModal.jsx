@@ -38,7 +38,7 @@ export default function PopoverModal({ isOpen, onClose }) {
       BASE_URL.post("categorias", category);
       addNewCategory(category);
       onClose();
-    }, 3000);
+    }, 500);
   };
   return (
     <Popover

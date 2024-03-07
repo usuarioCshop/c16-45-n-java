@@ -118,7 +118,7 @@ export default function ProductForm({ showform }) {
           setTimeout(() => {
             addProducts(product);
             BASE_URL.post("nuevo", product);
-          }, 10000);
+          }, 500);
         }}
       >
         {(props) => (

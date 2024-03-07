@@ -22,7 +22,7 @@ export default function DialogAlert({ isOpen, onClose, product }) {
       BASE_URL.delete(`eliminar/${value.id}`);
       deleteProducts(value);
       onClose();
-    }, 2000);
+    }, 500);
   };
   return (
     <AlertDialog
