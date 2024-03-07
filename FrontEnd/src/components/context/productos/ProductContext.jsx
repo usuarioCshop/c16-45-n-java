@@ -31,8 +31,15 @@ export default function ProductContextProvider({ children }) {
   //FILTRADOS
   //prueba de acceso al endpoint de filtrar-precio
   const filterTodo = async (values) => {
-    
-    const response = await BASE_URL.get("filtrar-precio",{params:values});
+    const filtrado = {
+      codigo: values.codigo,
+      minPrecio: parseFloat(values.minPrecio),
+      maxPrecio: parseFloat(values.maxPrecio),
+      minCantidad: parseInt(values.minCantidad),
+      maxCantidad: parseInt(values.maxCantidad),
+      categoria: values.categoria,
+    };
+    const response = await BASE_URL.get("filtrar-precio",{params:filtrado});
     dispatch({ type: "FILTRAR_TODO", payload: response.data });
   };
   
