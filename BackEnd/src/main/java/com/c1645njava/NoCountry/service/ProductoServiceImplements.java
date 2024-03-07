@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductoServiceImplements implements ProductoService {
@@ -47,7 +48,16 @@ public class ProductoServiceImplements implements ProductoService {
     }
 
     @Override
-    public List<Producto> filtrarPorPrecio(double minimo, double maximo) {
-        return repositorio.findByPrecioBetween(minimo, maximo);
+    public List<Producto> filtrarPorPrecio(
+            String codigo, Double minPrecio, Double maxPrecio, Integer minCantidad, Integer maxCantidad, String categoria
+    ) {
+        return repositorio.findAll().stream()
+                .filter(producto -> (codigo == null || producto.getCodigoBarra().contains(codigo)))
+                .filter(producto -> (minPrecio == null || producto.getPrecio() >= minPrecio))
+                .filter(producto -> (maxPrecio == null || producto.getPrecio() <= maxPrecio))
+                .filter(producto -> (minCantidad == null || producto.getCantidad() >= minCantidad))
+                .filter(producto -> (maxCantidad == null || producto.getCantidad() <= maxCantidad))
+                .filter(producto -> (categoria == null || producto.getCategoria().contains(categoria)))
+                .collect(Collectors.toList());
     }
 }

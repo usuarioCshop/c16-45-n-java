@@ -102,17 +102,15 @@ public class ProductoController {
 
     //Filtrar por rango de precio Min y Max
     @GetMapping("/filtrar-precio")
-    public ResponseEntity<List<Producto>> listarPorPrecio(@RequestParam(value = "min", required = false) Double min,
-                                                          @RequestParam(value = "max", required = false) Double max) {
-        // Verifica si se proporcionaron valores mínimos y máximos
-        if (min == null && max == null) {
-            // Si no se proporcionaron valores, devuelve todos los productos
-            List<Producto> todosLosProductos = productoService.listarProductos();
-            return ResponseEntity.ok(todosLosProductos);
-        }
-
+    public ResponseEntity<List<Producto>> listarPorPrecio(
+            @RequestParam(required = false) String codigo, @RequestParam(required = false) Double minPrecio,
+            @RequestParam(required = false) Double maxPrecio, @RequestParam(required = false) Integer minCantidad,
+            @RequestParam(required = false) Integer maxCantidad, @RequestParam(required = false) String categoria
+    ) {
         // Si se proporcionaron valores, filtra los productos por precio
-        List<Producto> productosFiltrados = productoService.filtrarPorPrecio(min != null ? min : 0, max != null ? max : Double.MAX_VALUE);
+        List<Producto> productosFiltrados = productoService.filtrarPorPrecio(
+                codigo, minPrecio, maxPrecio, minCantidad, maxCantidad, categoria
+        );
         return ResponseEntity.ok(productosFiltrados);
     }
 
