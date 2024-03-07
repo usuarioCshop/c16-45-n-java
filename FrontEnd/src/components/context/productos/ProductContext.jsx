@@ -21,6 +21,7 @@ const initialState = {
     descripcion: "",
     activo: true,
   },
+  actionStatus: false,
 };
 
 export const ProductContext = createContext(initialState);
@@ -42,26 +43,8 @@ export default function ProductContextProvider({ children }) {
     const response = await BASE_URL.get("filtrar-precio",{params:filtrado});
     dispatch({ type: "FILTRAR_TODO", payload: response.data });
   };
-  
-  // const filterByCategory = (filterValue) => {
-  //   dispatch({ type: "FILTER_BY_CATEGORY", payload: filterValue });
-  // };
-
-  // const filterByPrice = (min, max) => {
-  //   dispatch({ type: "FILTER_BY_PRICE", payload: { min, max } });
-  // };
-
-  // const filterByQuantity = (min, max) => {
-  //   dispatch({ type: "FILTER_BY_QUANTITY", payload: { min, max } });
-  // };
-
-  // const filterByCode = (filterValue) => {
-  //   dispatch({ type: "FILTER_BY_CODE", payload: filterValue });
-  // };
 
   // CATEGORIAS
-  
-  //
   const listCategories = async () => {
     const response = await BASE_URL.get("categorias");
     dispatch({ type: "LIST_CATEGORIES", payload: response.data });
@@ -129,10 +112,6 @@ export default function ProductContextProvider({ children }) {
       editCategories,
       listCategories,
       onFind,
-      // filterByCategory,
-      // filterByCode,
-      // filterByPrice,
-      // filterByQuantity,
       filterTodo,
     };
   }, [state]);

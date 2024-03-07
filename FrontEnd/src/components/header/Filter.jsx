@@ -27,19 +27,14 @@ export default function Filter({ isOpen, onClose }) {
   const [openFormCode, setOpenFormCode] = useState(false);
   const [openFormCategories, setOpenFormCategories] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const {
-    categories,
-    listCategories,
-    // filterByCategory,
-    // filterByCode,
-    // filterByPrice,
-    // filterByQuantity,
-    filterTodo,
-  } = useContext(ProductContext);
+
+  const { categories, listCategories, filterTodo, actionStatus } =
+    useContext(ProductContext);
 
   useEffect(() => {
     listCategories();
-  }, []);
+    actionStatus && cleanFilter();
+  }, [actionStatus]);
 
   const formik = useFormik({
     initialValues: {
@@ -103,9 +98,24 @@ export default function Filter({ isOpen, onClose }) {
   };
 
   const filtroSelected = (values) => {
-    //  console.log(values);
-     filterTodo(values)
-    onClose()
+    filterTodo(values);
+    onClose();
+  };
+
+  const cleanFilter = () => {
+    console.log("limpiando filtro....");
+    setOpenFormCategories(false);
+    setOpenFormPrice(false);
+    setOpenFormQuantity(false);
+    setOpenFormCode(false);
+    formik.initialValues = {
+      codigo: "",
+      minPrecio: 0.0,
+      maxPrecio: 0,
+      minCantidad: 0,
+      maxCantidad: 0,
+      categoria: "",
+    };
   };
 
   const handlerCategory = (event) => {
@@ -116,10 +126,7 @@ export default function Filter({ isOpen, onClose }) {
   const handlerFields = (fieldName, value) => {
     formik.setFieldValue(fieldName, value);
   };
- 
 
-
- 
   return (
     <Popover
       isOpen={isOpen}
@@ -298,15 +305,31 @@ export default function Filter({ isOpen, onClose }) {
                   <Button variant="outline" onClick={onClose}>
                     Cancelar
                   </Button>
-                  <Button
-                    type="submit"
-                    isLoading={isSubmitting}
-                    colorScheme="teal"
-                    onClick={()=>{filtroSelected(formik.values)}}
-                    bg="green.500"
-                  >
-                    Filtrar
-                  </Button>
+                  {!actionStatus ? (
+                    <Button
+                      type="submit"
+                      isLoading={isSubmitting}
+                      colorScheme="teal"
+                      onClick={() => {
+                        filtroSelected(formik.values);
+                      }}
+                      bg="green.500"
+                    >
+                      Filtrar
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      isLoading={isSubmitting}
+                      colorScheme="whatsapp"
+                      onClick={() => {
+                        cleanFilter();
+                      }}
+                      bg="green.500"
+                    >
+                      Limpiar Filtro
+                    </Button>
+                  )}
                 </ButtonGroup>
               </Form>
             )}

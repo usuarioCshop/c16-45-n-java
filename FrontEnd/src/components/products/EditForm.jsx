@@ -51,10 +51,10 @@ export default function EditForm({ values, onClose }) {
     }),
 
     onSubmit(values) {
-      toOpenSuccessModal();
       setTimeout(() => {
         editProducts(values);
-      }, 2000);
+        toOpenSuccessModal();
+      }, 500);
     },
   });
 
@@ -70,8 +70,8 @@ export default function EditForm({ values, onClose }) {
     setOpenSuccessModal(true);
   };
   const closeSuccessModal = () => {
-    onClose();
     setOpenSuccessModal(false);
+    onClose();
   };
 
   return (
@@ -84,7 +84,12 @@ export default function EditForm({ values, onClose }) {
       borderRadius="md"
       boxShadow="2xl"
     >
-      <Formik enableReinitialize>
+      <Formik
+        enableReinitialize
+        initialValues={formik.initialValues}
+        validationSchema={formik.validationSchema}
+        onSubmit={formik.onSubmit}
+      >
         {({ isSubmitting, errors }) => (
           <Form onSubmit={formik.handleSubmit}>
             <FormControl variant="floating" isRequired my="5">
@@ -269,7 +274,5 @@ export default function EditForm({ values, onClose }) {
 
 EditForm.propTypes = {
   onClose: PropTypes.func,
-  errors: PropTypes.func,
   values: PropTypes.object,
-  isSubmitting: PropTypes.func,
 };
