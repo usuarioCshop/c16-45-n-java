@@ -14,6 +14,7 @@ import {
   MenuItem,
   Button,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { LoginContext } from "../context/LoginContext";
@@ -21,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const {setValido}=useContext(LoginContext)
+  const { setValido } = useContext(LoginContext);
   const { colorMode, toggleColorMode } = useColorMode();
   const theme = useTheme();
   const toggleIcon = colorMode === "dark" ? <SunIcon /> : <MoonIcon />;
@@ -29,7 +30,29 @@ export default function Navbar() {
     colorMode === "dark" ? theme.colors.darkBlue : theme.colors.white;
   }, [colorMode, theme]);
 
-  
+  // const estilo = {
+  //   display: useBreakpointValue({
+  //     base: "inline-flex",
+  //     sm: "inline-flex",
+  //     md: "inline-flex",
+  //     lg: "flex",
+  //   }),
+  //   flexDirection: useBreakpointValue({
+  //     base: "column",
+  //     sm: "column",
+  //     md: "row",
+  //     lg: "row",
+  //   }),
+    
+  //   fontSize: useBreakpointValue({
+  //     base: "1em",
+  //     sm: "1.1em",
+  //     md: "1.5em",
+  //     lg: "1.5em",
+  //   }),
+   
+  // };
+
   return (
     <Flex
       w="100%"
@@ -47,27 +70,41 @@ export default function Navbar() {
         src="https://i.postimg.cc/KjvjxVJ9/version-Letras-Mas-Grandes.png"
         alt="brand_logo"
       />
-      <Box>
+
+      {/* <Box flexDir={flexDir} style={estilo}> */}
+      <Box display="flex" >
         <Text
-          as="a"
-          p="5px"
-          m="5px"
+          as="div"
+          p={useBreakpointValue({
+            base: "5px",
+            sm: "5px",
+            md: "10px",
+            lg: "10px",
+          })}
+          m={useBreakpointValue({
+            base: "5px 2px",
+            sm: "5px 5px",
+            md: "10p 10px",
+           
+          })}
           cursor={"pointer"}
           textDecorationStyle={"none"}
+         
         >
           Stock
         </Text>
         <Text
-          as="a"
+          as="div"
           p="5px"
           m="5px"
           cursor={"pointer"}
           textDecorationStyle={"none"}
+         
         >
           Categorias
         </Text>
         <Text
-          as="a"
+          as="div"
           p="5px"
           m="5px"
           cursor={"pointer"}
@@ -94,8 +131,15 @@ export default function Navbar() {
           <MenuList color="darkblue">
             <MenuItem key={1}>Cuenta</MenuItem>
             <MenuItem key={2}>Estadisticas</MenuItem>
-            <MenuItem key={3} onClick={()=>{setValido(false);navigate("/")}}>Cerrar Sesion</MenuItem>
-            
+            <MenuItem
+              key={3}
+              onClick={() => {
+                setValido(false);
+                navigate("/");
+              }}
+            >
+              Cerrar Sesion
+            </MenuItem>
           </MenuList>
         </Menu>
         <IconButton icon={toggleIcon} onClick={toggleColorMode} mx="3" />
