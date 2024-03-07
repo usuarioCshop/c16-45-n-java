@@ -27,11 +27,19 @@ export default function Filter({ isOpen, onClose }) {
   const [openFormCode, setOpenFormCode] = useState(false);
   const [openFormCategories, setOpenFormCategories] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const { categories, listCategories } = useContext(ProductContext);
+  const {
+    categories,
+    listCategories,
+    // filterByCategory,
+    // filterByCode,
+    // filterByPrice,
+    // filterByQuantity,
+    filterTodo,
+  } = useContext(ProductContext);
 
   useEffect(() => {
     listCategories();
-  }, [listCategories]);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -95,8 +103,9 @@ export default function Filter({ isOpen, onClose }) {
   };
 
   const filtroSelected = (values) => {
-    console.log(values);
-    onClose();
+    //  console.log(values);
+     filterTodo(values)
+    onClose()
   };
 
   const handlerCategory = (event) => {
@@ -107,7 +116,10 @@ export default function Filter({ isOpen, onClose }) {
   const handlerFields = (fieldName, value) => {
     formik.setFieldValue(fieldName, value);
   };
+ 
 
+
+ 
   return (
     <Popover
       isOpen={isOpen}
@@ -290,7 +302,7 @@ export default function Filter({ isOpen, onClose }) {
                     type="submit"
                     isLoading={isSubmitting}
                     colorScheme="teal"
-                    onClick={() => filtroSelected(formik.values)}
+                    onClick={()=>{filtroSelected(formik.values)}}
                     bg="green.500"
                   >
                     Filtrar

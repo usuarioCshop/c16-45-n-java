@@ -8,7 +8,7 @@ export const Principal = () => {
   return (
     <ProductContextProvider>
       <Container 
-      maxW={["100%", "80%", "80%", "80%"]} h="100vh"
+      maxW={["100%", "100%", "100%", "100%"]} h="100vh"
      
        >
         <Navbar />
