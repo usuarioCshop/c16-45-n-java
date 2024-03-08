@@ -61,16 +61,16 @@ export default function ordenar(cat,products,tipo){
         case 3:
             (cat)
             ?
-            (products.sort((a,b)=> a.cantidad - b.cantidad ))
+            (products.sort((a,b)=> a.precio - b.precio ))
             :
-            (products.sort((a,b)=> b.cantidad - a.cantidad ));
+            (products.sort((a,b)=> b.precio - a.precio ));
             break;
         case 4:
             (cat)
             ?
-            (products.sort((a,b)=> a.precio - b.precio ))
+            (products.sort((a,b)=> a.cantidad - b.cantidad ))
             :
-            (products.sort((a,b)=> b.precio - a.precio ));
+            (products.sort((a,b)=> b.cantidad - a.cantidad ));
             break;
     }
   

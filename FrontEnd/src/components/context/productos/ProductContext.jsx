@@ -22,13 +22,14 @@ const initialState = {
     activo: true,
   },
   actionStatus: false,
+  stadoFilter:false,
 };
 
 export const ProductContext = createContext(initialState);
 
 export default function ProductContextProvider({ children }) {
   const [state, dispatch] = useReducer(prodsReducer, initialState);
-
+ 
   //FILTRADOS
   //prueba de acceso al endpoint de filtrar-precio
   const filterTodo = async (values) => {
@@ -40,7 +41,9 @@ export default function ProductContextProvider({ children }) {
       maxCantidad: parseInt(values.maxCantidad),
       categoria: values.categoria,
     };
+    console.log(filtrado);
     const response = await BASE_URL.get("filtrar-precio",{params:filtrado});
+    console.log(response.data);
     dispatch({ type: "FILTRAR_TODO", payload: response.data });
   };
 

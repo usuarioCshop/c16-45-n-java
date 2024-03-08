@@ -28,13 +28,13 @@ export default function Filter({ isOpen, onClose }) {
   const [openFormCategories, setOpenFormCategories] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const { categories, listCategories, filterTodo, actionStatus } =
+  const { categories, listCategories, filterTodo, stadoFilter } =
     useContext(ProductContext);
 
   useEffect(() => {
     listCategories();
-    actionStatus && cleanFilter();
-  }, [actionStatus]);
+    // stadoFilter && cleanFilter();
+  }, [stadoFilter]);
 
   const formik = useFormik({
     initialValues: {
@@ -305,7 +305,7 @@ export default function Filter({ isOpen, onClose }) {
                   <Button variant="outline" onClick={onClose}>
                     Cancelar
                   </Button>
-                  {!actionStatus ? (
+                  
                     <Button
                       type="submit"
                       isLoading={isSubmitting}
@@ -317,19 +317,7 @@ export default function Filter({ isOpen, onClose }) {
                     >
                       Filtrar
                     </Button>
-                  ) : (
-                    <Button
-                      type="submit"
-                      isLoading={isSubmitting}
-                      colorScheme="whatsapp"
-                      onClick={() => {
-                        cleanFilter();
-                      }}
-                      bg="green.500"
-                    >
-                      Limpiar Filtro
-                    </Button>
-                  )}
+               
                 </ButtonGroup>
               </Form>
             )}
