@@ -12,10 +12,15 @@ import Searchbar from "./Searchbar";
 import ModalWindow from "@/components/ui/ModalWindow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Filter from "./Filter";
+import { ProductContext } from "../context/productos/ProductContext";
 
 export default function Header() {
+  const {filtrado,limpiarFiltro}=useContext(ProductContext)
+  // useEffect(()=>{
+  //  console.log(filtrado);
+  // },[filtrado])
 
   const [openFilter, setOpenFilter] = useState(false);
   const { colorMode } = useColorMode();
@@ -26,7 +31,6 @@ export default function Header() {
   const cerrarFilter = () => {
     setOpenFilter(false);
   };
-
 
   return (
     <Flex
@@ -53,21 +57,7 @@ export default function Header() {
             <FontAwesomeIcon icon={faFilter} size="xl" />
           </Icon>
         </IconButton>
-        {true &&
-        (
-          <Button
-            // type="submit"
-            // isLoading={isSubmitting}
-            colorScheme="whatsapp"
-            onClick={() => {
-              //  cleanFilter();
-            }}
-            bg="green.500"
-          >
-            Limpiar Filtro
-          </Button>
-        )}
-        <Box position="relative" rigth="0" top="15px">
+       <Box position="relative" rigth="0" top="15px">
           <Filter isOpen={openFilter} onClose={cerrarFilter}  />
         </Box>
       </Box>

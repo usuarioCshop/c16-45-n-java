@@ -33,7 +33,7 @@ export default function prodsReducer(state, action) {
     case "FILTRAR_TODO":
       return {
         products: [...action.payload],
-        stadoFilter: true,
+        filtrado:state.filtrado
       };
     default:
       return state;

@@ -22,27 +22,40 @@ const initialState = {
     activo: true,
   },
   actionStatus: false,
-  stadoFilter:false,
+  filtrado: {
+    codigo: null,
+    minPrecio: null,
+    maxPrecio: null,
+    minCantidad: null,
+    maxCantidad: null,
+    categoria: null,
+  },
 };
 
 export const ProductContext = createContext(initialState);
 
 export default function ProductContextProvider({ children }) {
   const [state, dispatch] = useReducer(prodsReducer, initialState);
- 
+  //LIMPIAR FILTROS
+  const limpiarFiltro = async () => {
+    state.filtrado = {
+      codigo: null,
+      minPrecio: null,
+      maxPrecio: null,
+      minCantidad: null,
+      maxCantidad: null,
+      categoria: null,
+    };
+    const response = await BASE_URL.get("listar");
+    dispatch({ type: "LIST_PRODUCTS", payload: response.data });
+  };
+
   //FILTRADOS
   //prueba de acceso al endpoint de filtrar-precio
   const filterTodo = async (values) => {
-    const filtrado = {
-      codigo: values.codigo,
-      minPrecio: parseFloat(values.minPrecio),
-      maxPrecio: parseFloat(values.maxPrecio),
-      minCantidad: parseInt(values.minCantidad),
-      maxCantidad: parseInt(values.maxCantidad),
-      categoria: values.categoria,
-    };
-    console.log(filtrado);
-    const response = await BASE_URL.get("filtrar-precio",{params:filtrado});
+    state.filtrado = values;
+
+    const response = await BASE_URL.get("filtrar-precio", { params: values });
     console.log(response.data);
     dispatch({ type: "FILTRAR_TODO", payload: response.data });
   };
@@ -116,6 +129,7 @@ export default function ProductContextProvider({ children }) {
       listCategories,
       onFind,
       filterTodo,
+      limpiarFiltro
     };
   }, [state]);
 

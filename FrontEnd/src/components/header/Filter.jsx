@@ -28,23 +28,18 @@ export default function Filter({ isOpen, onClose }) {
   const [openFormCategories, setOpenFormCategories] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const { categories, listCategories, filterTodo, stadoFilter } =
+  const { categories, listCategories, filterTodo, filtrado } =
     useContext(ProductContext);
 
   useEffect(() => {
     listCategories();
+    
     // stadoFilter && cleanFilter();
-  }, [stadoFilter]);
+  }, []);
+
 
   const formik = useFormik({
-    initialValues: {
-      codigo: "",
-      minPrecio: 0.0,
-      maxPrecio: 0,
-      minCantidad: 0,
-      maxCantidad: 0,
-      categoria: "",
-    },
+    initialValues: filtrado,
     validationSchema: Yup.object({
       minPrecio: Yup.number()
         .required("Coloca un precio minimo en formato 0.00")
@@ -72,11 +67,17 @@ export default function Filter({ isOpen, onClose }) {
       filtroSelected(values);
     },
   });
-
+//voy a modificar como para tocar el contexto
   const toggleFormPrice = (status) => {
-    return status.target.checked
-      ? setOpenFormPrice(true)
-      : setOpenFormPrice(false);
+    if(status.target.checked){
+      setOpenFormPrice(true)
+
+    }else{
+      setOpenFormPrice(false);
+      filtrado.minPrecio=null;
+      filtrado.maxPrecio=null;
+    }
+    return 
   };
 
   const toggleFormQuantity = (status) => {
@@ -98,25 +99,18 @@ export default function Filter({ isOpen, onClose }) {
   };
 
   const filtroSelected = (values) => {
-    filterTodo(values);
+    filterTodo({
+      codigo: openFormCode ? values.codigo : null,
+      minPrecio: openFormPrice ? parseFloat(values.minPrecio) : null,
+      maxPrecio: openFormPrice ? parseFloat(values.maxPrecio) : null,
+      minCantidad: openFormQuantity ? parseInt(values.minCantidad) : null,
+      maxCantidad: openFormQuantity ? parseInt(values.maxCantidad) : null,
+      categoria: openFormCategories ? values.categoria : null,
+    });
     onClose();
   };
 
-  const cleanFilter = () => {
-    console.log("limpiando filtro....");
-    setOpenFormCategories(false);
-    setOpenFormPrice(false);
-    setOpenFormQuantity(false);
-    setOpenFormCode(false);
-    formik.initialValues = {
-      codigo: "",
-      minPrecio: 0.0,
-      maxPrecio: 0,
-      minCantidad: 0,
-      maxCantidad: 0,
-      categoria: "",
-    };
-  };
+  
 
   const handlerCategory = (event) => {
     const chooseValue = event.target.value;
@@ -145,7 +139,9 @@ export default function Filter({ isOpen, onClose }) {
             {({ isSubmitting }) => (
               <Form onSubmit={formik.handleSubmit}>
                 <Stack>
-                  <Checkbox onChange={(e) => toggleFormCode(e)}>
+                  <Checkbox 
+
+                    onChange={(e) => toggleFormCode(e)}>
                     codigo
                   </Checkbox>
                   {openFormCode && (
@@ -155,15 +151,16 @@ export default function Filter({ isOpen, onClose }) {
                           as={Input}
                           type="text"
                           id="codigo"
+                          name="codigo"
                           focusBorderColor="green.500"
-                          placeholder="agrega tu categoria"
+                          
                           onChange={(e) =>
                             handlerFields("codigo", e.target.value)
                           }
                           value={formik.values.codigo}
                         />
                         <FormLabel
-                          htmlFor="productImage"
+                          htmlFor="codigo"
                           fontWeight="bold"
                           backgroundColor="white"
                         >
@@ -173,7 +170,9 @@ export default function Filter({ isOpen, onClose }) {
                     </ScaleFade>
                   )}
 
-                  <Checkbox onChange={(e) => toggleFormPrice(e)}>
+                  <Checkbox 
+                  
+                  onChange={(e) => toggleFormPrice(e)}>
                     precio
                   </Checkbox>
                   {openFormPrice && (
@@ -305,19 +304,18 @@ export default function Filter({ isOpen, onClose }) {
                   <Button variant="outline" onClick={onClose}>
                     Cancelar
                   </Button>
-                  
-                    <Button
-                      type="submit"
-                      isLoading={isSubmitting}
-                      colorScheme="teal"
-                      onClick={() => {
-                        filtroSelected(formik.values);
-                      }}
-                      bg="green.500"
-                    >
-                      Filtrar
-                    </Button>
-               
+
+                  <Button
+                    type="submit"
+                    isLoading={isSubmitting}
+                    colorScheme="teal"
+                    onClick={() => {
+                      filtroSelected(formik.values);
+                    }}
+                    bg="green.500"
+                  >
+                    Filtrar
+                  </Button>
                 </ButtonGroup>
               </Form>
             )}
